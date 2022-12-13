@@ -1,15 +1,42 @@
 ---
-title: "Making shareable documents with Quarto"
-subtitle: "Create open-source tutorials, onboarding docs, and much more"
+title: "Generalidades de los datos geográficos"
+subtitle: "Unidad 1: Primeros pasos con SIG's"
+format: 
+  html: 
+    code-fold: false
 ---
 
-## Welcome {#welcome}
+## Unidad 1 {#Unidad1}
 
-It's possible to create beautiful documentation to share online with [Quarto](https://quarto.org) that auto-updates with [GitHub](http://github.com). This is very new and incredibly cool. This tutorial is an example of a quarto website --- it is a really powerful way to create and share your work. You can communicate about science using the same reproducible workflow you and/or your colleagues use for analyses, whether or not you write code.
+- Información geográfica
+  Escalas
+ + Georreferencia
+ + Sistemas de referencia
+ + Sistemas de coordenadas
+- Estructuras de datos.
+ + Tipos de datos geográficos
+ + Meta datos
+- Fuentes de datos geográficos.
 
-Creating websites with Quarto can be done without knowing R, Python or HTML, CSS, etc, and that's where we'll start. However, Quarto integrates with these tools so you can make your websites as complex and beautiful as you like as you see examples and reuse and remix from others in the open community. This tutorial borrows heavily from a lot of great tutorials and resources you should check out too -- there are links throughout.
 
 ## What is Quarto?
+
+
+```{r}
+#| warning: false
+
+library(sf)
+datos <- system.file("shape/nc.shp", package="sf") |> 
+  st_read(quiet = TRUE) |> head(6)
+```
+
+
+```{r}
+# Bloque 1
+datos |> st_geometry() |> plot()
+```
+
+
 
 Quarto helps you have your ideas and your code in one place, and present it in a beautiful way. 
 
