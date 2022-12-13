@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/quarto-workflows/jupyter.html</loc>
-    <lastmod>2022-12-13T06:00:32.815Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/explore.html</loc>
+    <lastmod>2022-12-13T20:25:11.589Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/quarto-workflows/rstudio.html</loc>
-    <lastmod>2022-12-13T06:00:34.943Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/index.html</loc>
+    <lastmod>2022-12-13T20:25:37.111Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/quarto-workflows/index.html</loc>
-    <lastmod>2022-12-13T06:00:35.339Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/learning-more.html</loc>
+    <lastmod>2022-12-13T20:25:38.366Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/quarto-workflows/browser.html</loc>
-    <lastmod>2022-12-13T06:00:35.711Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/browser.html</loc>
+    <lastmod>2022-12-13T20:25:39.501Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/transition-from-rmarkdown.html</loc>
-    <lastmod>2022-12-13T06:00:36.163Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/index.html</loc>
+    <lastmod>2022-12-13T20:25:40.707Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/learning-more.html</loc>
-    <lastmod>2022-12-13T06:00:36.495Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/jupyter.html</loc>
+    <lastmod>2022-12-13T20:25:42.269Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/index.html</loc>
-    <lastmod>2022-12-13T06:00:36.875Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/rstudio.html</loc>
+    <lastmod>2022-12-13T20:25:43.520Z</lastmod>
   </url>
   <url>
-    <loc>https://openscapes.github.io/quarto-website-tutorial/explore.html</loc>
-    <lastmod>2022-12-13T06:00:37.367Z</lastmod>
+    <loc>https://SGMStalin.github.io/r-spatial_activities/transition-from-rmarkdown.html</loc>
+    <lastmod>2022-12-13T20:25:44.998Z</lastmod>
   </url>
 </urlset>
