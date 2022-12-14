@@ -6,67 +6,149 @@ format:
     code-fold: false
 ---
 
-## Unidad 1 {#Unidad1}
-
-- Información geográfica
-  Escalas
- + Georreferencia
- + Sistemas de referencia
- + Sistemas de coordenadas
-- Estructuras de datos.
- + Tipos de datos geográficos
- + Meta datos
-- Fuentes de datos geográficos.
-
-
-## What is Quarto?
-
+## Paquetes utilizados en esta lección
 
 ```{r}
 #| warning: false
 
 library(sf)
-datos <- system.file("shape/nc.shp", package="sf") |> 
-  st_read(quiet = TRUE) |> head(6)
 ```
 
+
+
+# Unidad 1 {#Unidad1}
+
+* Información geográfica
+* Escalas
+    + Georreferencia
+    + Sistemas de referencia
+    + Sistemas de coordenadas
+* Estructuras de datos.
+    + Tipos de datos geográficos
+    + Meta datos
+* Fuentes de datos geográficos.
+
+
+## Actividad 1. Ubiación espacial
+
+**Abra el mapa de OpenStreetMap en el explorador de Internet. Elija una entidad de la ciudad e intente describir en palabras las propiedades espaciales y atributos.**
+
+
+Entidad espacial:	Parque Calderón
+
+Se encuentra al sur del Ecuador, en la ciudad de Cuenca, en el centro de la ciudad. En las calles Benigno Malo, Simón Bolívar, Luis Cordero y Mariscal Sucre.
+
+Atributos:
+ -	Forma:			Poligonal
+ - Categoría:		Zona de recreación
+ - Área aproximada:	100m$^2$
+
+
+-----
+
+
+## Actividad 2. Escalas y mediciones
+
+1. **(En google earth) Acérquese al campus Balzay lo suficiente hasta que la barra de escala muestre "100m". Luego mide el largo del techo del "Bloque B" (Aulario): ¿Cuál es la longitud del edificio según lo que midió?**
+
+84.04m
+
+
+2. **Acérquese al campus Balzay lo suficiente hasta que la barra de escala muestre "10m". Luego mida el largo del techo del "Bloque B" (Aulario): ¿Cuál es la longitud del edificio según lo que midió?**
+
+85.43m
+
+3. **¿Hay diferencias entre las medidas de uno y otro?¿Por qué?**
+
+La precisón es mayor a medida que la escala es mayor, al inicio no eran tan fácil distinguir entre los límites del edificio. Sin embargo, con una mayor escala, se pudo distinguir mejor estos límites.
+
+----
+
+## Actividad 3. Sistemas de Referencia de Coordenadas (Georreferenciación)
+
+**Compare el resultado de los Bloques 1 y 2. ¿Qué nota de diferente entre ambos resultados? ¿A qué cree que se debe?**
+
+Importamos los datos que vienen por defecto en el paquete `sf`
+
+```{r}
+#| warning: false
+
+datos <- system.file("shape/nc.shp", package="sf") |> 
+  st_read(quiet = TRUE) |> head(6) |>
+  st_centroid()
+```
+
+> Bloque 1
 
 ```{r}
 # Bloque 1
-datos |> st_geometry() |> plot()
+datos |> st_transform(3857) |> st_geometry() |> st_as_text()
 ```
 
 
+> Bloque 2
 
-Quarto helps you have your ideas and your code in one place, and present it in a beautiful way. 
+```{r}
+# Bloque 2
+datos |> st_transform(4326) |> st_geometry() |> st_as_text()
+```
 
-**Quarto unifies and extends the RMarkdown ecosystem** - it unifies by combining the functionality of R Markdown, bookdown, distill, xaringian, etc into a single consistent system. And it extends in several ways: all features are possible beyond R too, including Python and Javascript. It also has more “guardrails”: accessibility and inclusion are centered in the design. Quarto is for people who love RMarkdown, and it's for people who have never used RMarkdown. 
- 
+Las coordenadas se están representando diferente, esto se a la transformación que se realiza, en el bloque A utilizamos un epsg: 3857 y en el segundo bloque un epsg: 4326.
 
-The ability for Quarto to streamline collaboration has been so cool and important for our [NASA Openscapes](https://nasa-openscapes.github.io/) project. Quarto has been a common place for us to collaborate - across R and Python languages and coding expertise. 
+-----
 
-## What is this tutorial?
+## Actividad 4. Sistema de coordenadas
 
-This is a 1-hour tutorial that can be used to teach or as self-paced learning. 
+**El estadio universitario de la UCE se encuentra en las coordenadas: (0.2018894 S, 78.5041430 W)**
 
-We introduce Quarto by exploring this tutorial website, and practicing the basic Quarto workflow using different tools (GitHub browser, RStudio, and Jupyter) for editing your website.
+- Cual es el valor de Latitud?
 
-We'll start off from the browser so you don't need to install any additional software, however this approach is very limited and you will soon outgrow its capabilities. If you don't already have a workflow to edit files and sync to GitHub from your computer, I recommend RStudio. You don't need to know R to use RStudio, and it has powerful editor features that make for happy workflows.
+0.2018894
 
-[Quarto.org](https://quarto.org) is the go-to place for full documentation and more tutorials! 
+- Cual es el valor de Longitud?
 
-## Example Quarto sites
+78.5041430
 
-A few Quarto websites from Openscapes - so far we have been using Quarto for documentation using Quarto and Markdown files and Jupyter Notebooks.
+- Expresar esa coordenada en grados minutos y segundos.
 
--   [Champions Lessons Series](https://openscapes.github.io/series)
--   [Openscapes Approach Guide](https://openscapes.github.io/approach-guide/)\
--   [2021 NASA Cloud Hackathon](https://nasa-openscapes.github.io/2021-Cloud-Hackathon/)
--   [Faylab Lab Manual](https://thefaylab.github.io/lab-manual/)
--   [A Quarto tip a day](https://mine-cetinkaya-rundel.github.io/quarto-tip-a-day/), by Mine Çetinkaya-Rundel
+```{r}
+lat <- 0.2018894
+lon <- 78.5041430
 
-## About
+Y = paste(0, "°", round(lat*60), "'", round(((lat*60)%%1)*60, 2), "\"")
+X = paste(78, "°", round((lon%%1)*60), "'", round(((lon*60)%%1)*60, 2), "\"")
 
-[Openscapes](https://openscapes.org) is about better science for future us. We help researchers reimagine data analysis, develop modern skills that are of immediate value to them, and cultivate collaborative and inclusive research teams as part of the broader global open movement.
+```
 
-We're developing this tutorial to help folks with different levels of technical skills use [Quarto](https://quarto.org) for documentation and tutorial building. This tutorial was originally created for several different audiences: [NASA-Openscapes](https://nasa-openscapes.github.io) researcher support engineers using Python, communications directors at organizations promoting open science who do not identify as coders, and fisheries scientists curious about transitioning from RMarkdown. We're hoping it's useful to folks with backgrounds as wide as these; if you find it useful or have suggestions for improvement, please let us know by clicking "Edit this page" or "Report an issue" at the upper right side of any page.
+coordenada en X: `r X`; coordenada en Y: `r Y`
+
+
+- Halle la coordenada en la carta mostrada
+
+> Para hallar la solución: 1° = 60' = 3600”
+
+![Estadio de la Universidad de Cuenca](images/uce_google_satellite_hw.png){alt="Estadio de la Universidad de Cuenca" fig-align="center" width="95%"}
+
+------
+
+## Actividad 5. Codificación de SRC
+
+Abra la aplicación web de Google Earth e intente localizar la siguiente coordenada:
+
+Valor 1: 9988610.51
+Valor 2: 212665.41.
+
+_Le sugiero que haga todas las preguntas necesarias para poder resolver este reto._
+
+> Se realizó la conversión de coordenadas a geográfias, en donde se obtuvo las siguientes:
+
+- latitud: -0.10293
+
+- longitud: -77.58133
+
+**¿Qué muestra el mapa en este lugar?**
+
+Aparentemente el punto muestra la ubicación de la cascada de San Rafael.
+
+
+

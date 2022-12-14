@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -124,6 +124,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -145,7 +146,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
-      <a href="./" class="sidebar-logo-link">
+      <a href="./index.html" class="sidebar-logo-link">
       <img src="./images/MHIDRO.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main tools-wide">
@@ -172,31 +173,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./explore.html" class="sidebar-item-text sidebar-link">Unidad 2</a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./quarto-workflows/index.html" class="sidebar-item-text sidebar-link">Quarto workflows</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./quarto-workflows/browser.html" class="sidebar-item-text sidebar-link">From the Browser</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./quarto-workflows/rstudio.html" class="sidebar-item-text sidebar-link">From RStudio</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./quarto-workflows/jupyter.html" class="sidebar-item-text sidebar-link">From Jupyter</a>
-  </div>
-</li>
-      </ul>
-  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./learning-more.html" class="sidebar-item-text sidebar-link">Learning more</a>
@@ -204,7 +180,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./transition-from-rmarkdown.html" class="sidebar-item-text sidebar-link">Transition from Rmd</a>
+  <a href="./transition-from-rmarkdown.html" class="sidebar-item-text sidebar-link">Transition from RMarkdown</a>
   </div>
 </li>
     </ul>
@@ -216,11 +192,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#Unidad1" id="toc-Unidad1" class="nav-link active" data-scroll-target="#Unidad1">Unidad 1</a></li>
-  <li><a href="#what-is-quarto" id="toc-what-is-quarto" class="nav-link" data-scroll-target="#what-is-quarto">What is Quarto?</a></li>
-  <li><a href="#what-is-this-tutorial" id="toc-what-is-this-tutorial" class="nav-link" data-scroll-target="#what-is-this-tutorial">What is this tutorial?</a></li>
-  <li><a href="#example-quarto-sites" id="toc-example-quarto-sites" class="nav-link" data-scroll-target="#example-quarto-sites">Example Quarto sites</a></li>
-  <li><a href="#about" id="toc-about" class="nav-link" data-scroll-target="#about">About</a></li>
+  <li><a href="#paquetes-utilizados-en-esta-lección" id="toc-paquetes-utilizados-en-esta-lección" class="nav-link active" data-scroll-target="#paquetes-utilizados-en-esta-lección">Paquetes utilizados en esta lección</a></li>
+  <li><a href="#Unidad1" id="toc-Unidad1" class="nav-link" data-scroll-target="#Unidad1">Unidad 1</a>
+  <ul class="collapse">
+  <li><a href="#actividad-1.-ubiación-espacial" id="toc-actividad-1.-ubiación-espacial" class="nav-link" data-scroll-target="#actividad-1.-ubiación-espacial">Actividad 1. Ubiación espacial</a></li>
+  <li><a href="#actividad-2.-escalas-y-mediciones" id="toc-actividad-2.-escalas-y-mediciones" class="nav-link" data-scroll-target="#actividad-2.-escalas-y-mediciones">Actividad 2. Escalas y mediciones</a></li>
+  <li><a href="#actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación" id="toc-actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación" class="nav-link" data-scroll-target="#actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación">Actividad 3. Sistemas de Referencia de Coordenadas (Georreferenciación)</a></li>
+  <li><a href="#actividad-4.-sistema-de-coordenadas" id="toc-actividad-4.-sistema-de-coordenadas" class="nav-link" data-scroll-target="#actividad-4.-sistema-de-coordenadas">Actividad 4. Sistema de coordenadas</a></li>
+  <li><a href="#actividad-5.-codificación-de-src" id="toc-actividad-5.-codificación-de-src" class="nav-link" data-scroll-target="#actividad-5.-codificación-de-src">Actividad 5. Codificación de SRC</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/SGMStalin/r-spatial_activities/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/SGMStalin/r-spatial_activities/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -238,68 +218,149 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
 </header>
 
-<section id="Unidad1" class="level2">
-<h2 class="anchored" data-anchor-id="Unidad1">Unidad 1</h2>
+<section id="paquetes-utilizados-en-esta-lección" class="level2">
+<h2 class="anchored" data-anchor-id="paquetes-utilizados-en-esta-lección">Paquetes utilizados en esta lección</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="Unidad1" class="level1">
+<h1>Unidad 1</h1>
 <ul>
-<li>Información geográfica Escalas</li>
+<li>Información geográfica</li>
+<li>Escalas
+<ul>
 <li>Georreferencia</li>
 <li>Sistemas de referencia</li>
 <li>Sistemas de coordenadas</li>
-<li>Estructuras de datos.</li>
+</ul></li>
+<li>Estructuras de datos.
+<ul>
 <li>Tipos de datos geográficos</li>
 <li>Meta datos</li>
+</ul></li>
 <li>Fuentes de datos geográficos.</li>
 </ul>
+<section id="actividad-1.-ubiación-espacial" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-1.-ubiación-espacial">Actividad 1. Ubiación espacial</h2>
+<p><strong>Abra el mapa de OpenStreetMap en el explorador de Internet. Elija una entidad de la ciudad e intente describir en palabras las propiedades espaciales y atributos.</strong></p>
+<p>Entidad espacial: Parque Calderón</p>
+<p>Se encuentra al sur del Ecuador, en la ciudad de Cuenca, en el centro de la ciudad. En las calles Benigno Malo, Simón Bolívar, Luis Cordero y Mariscal Sucre.</p>
+<p>Atributos: - Forma: Poligonal - Categoría: Zona de recreación - Área aproximada: 100m<span class="math inline">\(^2\)</span></p>
+<hr>
 </section>
-<section id="what-is-quarto" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-quarto">What is Quarto?</h2>
+<section id="actividad-2.-escalas-y-mediciones" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-2.-escalas-y-mediciones">Actividad 2. Escalas y mediciones</h2>
+<ol type="1">
+<li><strong>(En google earth) Acérquese al campus Balzay lo suficiente hasta que la barra de escala muestre “100m”. Luego mide el largo del techo del “Bloque B” (Aulario): ¿Cuál es la longitud del edificio según lo que midió?</strong></li>
+</ol>
+<p>84.04m</p>
+<ol start="2" type="1">
+<li><strong>Acérquese al campus Balzay lo suficiente hasta que la barra de escala muestre “10m”. Luego mida el largo del techo del “Bloque B” (Aulario): ¿Cuál es la longitud del edificio según lo que midió?</strong></li>
+</ol>
+<p>85.43m</p>
+<ol start="3" type="1">
+<li><strong>¿Hay diferencias entre las medidas de uno y otro?¿Por qué?</strong></li>
+</ol>
+<p>La precisón es mayor a medida que la escala es mayor, al inicio no eran tan fácil distinguir entre los límites del edificio. Sin embargo, con una mayor escala, se pudo distinguir mejor estos límites.</p>
+<hr>
+</section>
+<section id="actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación">Actividad 3. Sistemas de Referencia de Coordenadas (Georreferenciación)</h2>
+<p><strong>Compare el resultado de los Bloques 1 y 2. ¿Qué nota de diferente entre ambos resultados? ¿A qué cree que se debe?</strong></p>
+<p>Importamos los datos que vienen por defecto en el paquete <code>sf</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"shape/nc.shp"</span>, <span class="at">package=</span><span class="st">"sf"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_read</span>(<span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"shape/nc.shp"</span>, <span class="at">package=</span><span class="st">"sf"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_read</span>(<span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_centroid</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<blockquote class="blockquote">
+<p>Bloque 1</p>
+</blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bloque 1</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bloque 1</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">3857</span>) <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span> <span class="fu">st_as_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "POINT (-9072322 4360161)" "POINT (-9030787 4368427)"
+[3] "POINT (-8981871 4357552)" "POINT (-8463269 4356810)"
+[5] "POINT (-8617259 4358915)" "POINT (-8570978 4350488)"</code></pre>
 </div>
 </div>
-<p>Quarto helps you have your ideas and your code in one place, and present it in a beautiful way.</p>
-<p><strong>Quarto unifies and extends the RMarkdown ecosystem</strong> - it unifies by combining the functionality of R Markdown, bookdown, distill, xaringian, etc into a single consistent system. And it extends in several ways: all features are possible beyond R too, including Python and Javascript. It also has more “guardrails”: accessibility and inclusion are centered in the design. Quarto is for people who love RMarkdown, and it’s for people who have never used RMarkdown.</p>
-<p>The ability for Quarto to streamline collaboration has been so cool and important for our <a href="https://nasa-openscapes.github.io/">NASA Openscapes</a> project. Quarto has been a common place for us to collaborate - across R and Python languages and coding expertise.</p>
+<blockquote class="blockquote">
+<p>Bloque 2</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bloque 2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">4326</span>) <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span> <span class="fu">st_as_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "POINT (-81.49806 36.43152)" "POINT (-81.12494 36.49124)"
+[3] "POINT (-80.68552 36.41266)" "POINT (-76.02684 36.4073)" 
+[5] "POINT (-77.41016 36.42251)" "POINT (-76.99441 36.36158)"</code></pre>
+</div>
+</div>
+<p>Las coordenadas se están representando diferente, esto se a la transformación que se realiza, en el bloque A utilizamos un epsg: 3857 y en el segundo bloque un epsg: 4326.</p>
+<hr>
 </section>
-<section id="what-is-this-tutorial" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-this-tutorial">What is this tutorial?</h2>
-<p>This is a 1-hour tutorial that can be used to teach or as self-paced learning.</p>
-<p>We introduce Quarto by exploring this tutorial website, and practicing the basic Quarto workflow using different tools (GitHub browser, RStudio, and Jupyter) for editing your website.</p>
-<p>We’ll start off from the browser so you don’t need to install any additional software, however this approach is very limited and you will soon outgrow its capabilities. If you don’t already have a workflow to edit files and sync to GitHub from your computer, I recommend RStudio. You don’t need to know R to use RStudio, and it has powerful editor features that make for happy workflows.</p>
-<p><a href="https://quarto.org">Quarto.org</a> is the go-to place for full documentation and more tutorials!</p>
-</section>
-<section id="example-quarto-sites" class="level2">
-<h2 class="anchored" data-anchor-id="example-quarto-sites">Example Quarto sites</h2>
-<p>A few Quarto websites from Openscapes - so far we have been using Quarto for documentation using Quarto and Markdown files and Jupyter Notebooks.</p>
+<section id="actividad-4.-sistema-de-coordenadas" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-4.-sistema-de-coordenadas">Actividad 4. Sistema de coordenadas</h2>
+<p><strong>El estadio universitario de la UCE se encuentra en las coordenadas: (0.2018894 S, 78.5041430 W)</strong></p>
 <ul>
-<li><a href="https://openscapes.github.io/series">Champions Lessons Series</a></li>
-<li><a href="https://openscapes.github.io/approach-guide/">Openscapes Approach Guide</a><br>
-</li>
-<li><a href="https://nasa-openscapes.github.io/2021-Cloud-Hackathon/">2021 NASA Cloud Hackathon</a></li>
-<li><a href="https://thefaylab.github.io/lab-manual/">Faylab Lab Manual</a></li>
-<li><a href="https://mine-cetinkaya-rundel.github.io/quarto-tip-a-day/">A Quarto tip a day</a>, by Mine Çetinkaya-Rundel</li>
+<li>Cual es el valor de Latitud?</li>
 </ul>
+<p>0.2018894</p>
+<ul>
+<li>Cual es el valor de Longitud?</li>
+</ul>
+<p>78.5041430</p>
+<ul>
+<li>Expresar esa coordenada en grados minutos y segundos.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lat <span class="ot">&lt;-</span> <span class="fl">0.2018894</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lon <span class="ot">&lt;-</span> <span class="fl">78.5041430</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">paste</span>(<span class="dv">0</span>, <span class="st">"°"</span>, <span class="fu">round</span>(lat<span class="sc">*</span><span class="dv">60</span>), <span class="st">"'"</span>, <span class="fu">round</span>(((lat<span class="sc">*</span><span class="dv">60</span>)<span class="sc">%%</span><span class="dv">1</span>)<span class="sc">*</span><span class="dv">60</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\"</span><span class="st">"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">paste</span>(<span class="dv">78</span>, <span class="st">"°"</span>, <span class="fu">round</span>((lon<span class="sc">%%</span><span class="dv">1</span>)<span class="sc">*</span><span class="dv">60</span>), <span class="st">"'"</span>, <span class="fu">round</span>(((lon<span class="sc">*</span><span class="dv">60</span>)<span class="sc">%%</span><span class="dv">1</span>)<span class="sc">*</span><span class="dv">60</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\"</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>coordenada en X: 78 ° 30 ’ 14.91 “; coordenada en Y: 0 ° 12 ’ 6.8”</p>
+<ul>
+<li>Halle la coordenada en la carta mostrada</li>
+</ul>
+<blockquote class="blockquote">
+<p>Para hallar la solución: 1° = 60’ = 3600”</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/uce_google_satellite_hw.png" class="img-fluid figure-img" style="width:95.0%" alt="Estadio de la Universidad de Cuenca"></p>
+<p></p><figcaption class="figure-caption">Estadio de la Universidad de Cuenca</figcaption><p></p>
+</figure>
+</div>
+<hr>
 </section>
-<section id="about" class="level2">
-<h2 class="anchored" data-anchor-id="about">About</h2>
-<p><a href="https://openscapes.org">Openscapes</a> is about better science for future us. We help researchers reimagine data analysis, develop modern skills that are of immediate value to them, and cultivate collaborative and inclusive research teams as part of the broader global open movement.</p>
-<p>We’re developing this tutorial to help folks with different levels of technical skills use <a href="https://quarto.org">Quarto</a> for documentation and tutorial building. This tutorial was originally created for several different audiences: <a href="https://nasa-openscapes.github.io">NASA-Openscapes</a> researcher support engineers using Python, communications directors at organizations promoting open science who do not identify as coders, and fisheries scientists curious about transitioning from RMarkdown. We’re hoping it’s useful to folks with backgrounds as wide as these; if you find it useful or have suggestions for improvement, please let us know by clicking “Edit this page” or “Report an issue” at the upper right side of any page.</p>
+<section id="actividad-5.-codificación-de-src" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-5.-codificación-de-src">Actividad 5. Codificación de SRC</h2>
+<p>Abra la aplicación web de Google Earth e intente localizar la siguiente coordenada:</p>
+<p>Valor 1: 9988610.51 Valor 2: 212665.41.</p>
+<p><em>Le sugiero que haga todas las preguntas necesarias para poder resolver este reto.</em></p>
+<blockquote class="blockquote">
+<p>Se realizó la conversión de coordenadas a geográfias, en donde se obtuvo las siguientes:</p>
+</blockquote>
+<ul>
+<li><p>latitud: -0.10293</p></li>
+<li><p>longitud: -77.58133</p></li>
+</ul>
+<p><strong>¿Qué muestra el mapa en este lugar?</strong></p>
+<p>Aparentemente el punto muestra la ubicación de la cascada de San Rafael.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -435,7 +496,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Switch to dark mode if need be
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
-  } 
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -457,7 +520,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -493,24 +573,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

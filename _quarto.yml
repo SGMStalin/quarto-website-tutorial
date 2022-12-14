@@ -34,14 +34,8 @@ website:
       - href: index.qmd
         text: Unidad 1
       - explore.qmd
-      - section: quarto-workflows/index.qmd
-        contents: 
-          - quarto-workflows/browser.md
-          - quarto-workflows/rstudio.qmd
-          - quarto-workflows/jupyter.md 
       - learning-more.qmd
-      - href: transition-from-rmarkdown.qmd
-        text: Transition from Rmd
+      - transition-from-rmarkdown.qmd
 
 
 format:
