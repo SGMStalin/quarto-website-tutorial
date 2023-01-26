@@ -2,34 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://SGMStalin.github.io/r-spatial_activities/explore.html</loc>
-    <lastmod>2022-12-15T16:32:48.039Z</lastmod>
+    <lastmod>2023-01-26T06:16:28.061Z</lastmod>
   </url>
   <url>
     <loc>https://SGMStalin.github.io/r-spatial_activities/index.html</loc>
-    <lastmod>2022-12-15T16:33:10.978Z</lastmod>
+    <lastmod>2023-01-26T06:16:33.849Z</lastmod>
   </url>
   <url>
     <loc>https://SGMStalin.github.io/r-spatial_activities/learning-more.html</loc>
-    <lastmod>2022-12-14T07:30:08.192Z</lastmod>
-  </url>
-  <url>
-    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/browser.html</loc>
-    <lastmod>2022-12-14T07:30:09.156Z</lastmod>
-  </url>
-  <url>
-    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/index.html</loc>
-    <lastmod>2022-12-14T07:30:10.147Z</lastmod>
-  </url>
-  <url>
-    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/jupyter.html</loc>
-    <lastmod>2022-12-14T07:30:11.243Z</lastmod>
-  </url>
-  <url>
-    <loc>https://SGMStalin.github.io/r-spatial_activities/quarto-workflows/rstudio.html</loc>
-    <lastmod>2022-12-14T07:30:12.099Z</lastmod>
+    <lastmod>2023-01-26T06:16:34.480Z</lastmod>
   </url>
   <url>
     <loc>https://SGMStalin.github.io/r-spatial_activities/transition-from-rmarkdown.html</loc>
-    <lastmod>2022-12-14T07:30:13.164Z</lastmod>
+    <lastmod>2023-01-26T06:16:35.253Z</lastmod>
   </url>
 </urlset>
