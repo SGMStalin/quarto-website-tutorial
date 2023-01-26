@@ -1,7 +1,15 @@
 ---
-title: Unidad 2
+title: "Unidad 2: Exploración de Información Espacial"
 ---
 
+# Visualizando vectores
+
+- Visualización de capas de vectores
+  + Cargando datos en capas vectoriales
+  + Explorando atributos y valores
+  + Selección de entidades: Consultas y motor de búsqueda
+  + Estilos y etiquetas de capas vectoriales.
+  + Ejercicios prácticos
 
 ## Paquetes utilizados en esta lección
 
@@ -12,6 +20,7 @@ title: Unidad 2
 library(sf)
 library(tidyverse)
 library(tmap)
+library(raster)
 ```
 
 
@@ -53,6 +62,8 @@ inamhi_stat[inamhi_stat$Codigo == "M0033", c("Codigo", "Nombre")] |>
 tmap_mode("view")
 qtm(inamhi_stat, symbols.col = "Estado")
 ```
+
+-----
 
 
 ## Actividad 2. Filtrado de vectores
@@ -103,6 +114,8 @@ nrow(samp_in_dhs)
 st_bbox(samp_in_dhs)
 ```
 
+-----
+
 
 ## Actividad 3. Estilos y etiquetas de vectores
 
@@ -125,6 +138,117 @@ qtm(dhs, fill = "grey30") +
   tm_dots(
     col = "in_dhs", palette = c("TRUE" = 'darkblue', "FALSE" = 'grey75'), title = "Conditions?"
   )
+```
+
+
+# Trabajando con capas Ráster
+
+- Visualización de capas de raster
+  + Cargando datos en capas raster
+  + Explorando atributos y valores
+  + Consultas de valores e histograma
+  + Estilos y etiquetas de capas raster.
+  + Ejercicios prácticos
+
+
+**genere los resultados y respuestas de las siguientes preguntas:**
+
+
+Cargue las capas "temperatura_2.tif" y "dem200.tif". Las dos capas representan la temperatura media para un mes normal de Enero en Ecuador continental y la Altitud correspondiente. Ahora:
+
+```{r}
+at_ec <- raster("data/tif/Temperatura_2.tif")
+dem <- raster("data/tif/dem200s.tif")
+```
+
+```{r}
+#| layout-ncol: 2
+
+plot(at_ec)
+plot(dem)
+```
+
+
+- Intente encontrar alguna diferencia entre las propiedades de ambos rasters:
+
+**Propiedades del raster de temperatura**
+
+```{r}
+c(ncol(at_ec), nrow(at_ec), ncell(at_ec), nlayers(at_ec))
+
+res(at_ec)
+
+crs(at_ec)
+
+extent(at_ec)
+```
+
+
+**Propiedades del raster DEM**
+
+```{r}
+c(ncol(dem), nrow(dem), ncell(dem), nlayers(dem))
+
+res(dem)
+
+crs(dem)
+
+extent(dem)
+```
+
+
+> Respuesta: Como se puede apreciar en los resultados, no existe diferencias en las propiedades del raster
+
+
+- Cargue las capas "modis_perc_bosque_*.tif"_ y descubra en qué se diferencia con la capa de temperatura.
+
+```{r}
+modis_2000 <- raster("data/tif/modis_perc_bosque_2000.tif")
+modis_2010 <- raster("data/tif/modis_perc_bosque_2010.tif")
+```
+
+
+```{r}
+#| layout-ncol: 2
+
+plot(modis_2000)
+plot(modis_2010)
+```
+
+**Propiedades de la capa Modis 2000**
+
+```{r}
+c(ncol(modis_2000), nrow(modis_2000), ncell(modis_2000), nlayers(modis_2000))
+
+res(modis_2000)
+
+crs(modis_2000)
+
+extent(modis_2000)
+```
+
+
+**Propiedades de la capa Modis 2010**
+
+```{r}
+c(ncol(modis_2010), nrow(modis_2010), ncell(modis_2010), nlayers(modis_2010))
+
+res(modis_2010)
+
+crs(modis_2010)
+
+extent(modis_2010)
+```
+
+
+- Explore las capas de porcentaje de bosque ("modis_perc_bosque_*.tif") mediante histogramas. Visualmente, ¿Hacia qué lado del histograma se agrupan los valores?
+
+```{r}
+#| layout-ncol: 2
+#| warning: false
+
+hist(modis_2000)
+hist(modis_2010)
 ```
 
 

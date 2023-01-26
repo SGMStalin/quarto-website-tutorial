@@ -1,10 +1,11 @@
 ---
-title: "Generalidades de los datos geográficos"
-subtitle: "Unidad 1: Primeros pasos con SIG's"
+title: "Unidad 1: Primeros pasos con SIG's"
 format: 
   html: 
     code-fold: false
 ---
+
+# Generalidades de los datos geográficos
 
 ## Paquetes utilizados en esta lección
 
