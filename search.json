@@ -2,70 +2,49 @@
   {
     "objectID": "explore.html",
     "href": "explore.html",
-    "title": "Unidad 2",
+    "title": "Unidad 2: Exploración de Información Espacial",
     "section": "",
-    "text": "library(sf)\nlibrary(tidyverse)\nlibrary(tmap)"
-  },
-  {
-    "objectID": "explore.html#actividad-1.-clases-atributos-y-valores",
-    "href": "explore.html#actividad-1.-clases-atributos-y-valores",
-    "title": "Unidad 2",
-    "section": "Actividad 1. Clases, atributos y valores",
-    "text": "Actividad 1. Clases, atributos y valores\nA partir del fichero “data/gpkg/estaciones_inamhi.gpkg”, cargue la capa “Estaciones meteorologicas”\n\ninamhi_stat <- st_read(\"data/gpkg/estaciones_inamhi.gpkg\", layer = \"Estaciones meteorologicas\")\n\nReading layer `Estaciones meteorologicas' from data source \n  `/mnt/data/IKIAM/git/r-spatial_activities/data/gpkg/estaciones_inamhi.gpkg' \n  using driver `GPKG'\nSimple feature collection with 138 features and 8 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: -89.61431 ymin: -4.584722 xmax: -75.39611 ymax: 1.305833\nGeodetic CRS:  WGS 84\n\n\nExplore los datos cargados e intente responder las siguientes preguntas:\n\n¿Cuál es el la extensión máxima que alcanza la capa?\n\n\nst_bbox(inamhi_stat)\n\n      xmin       ymin       xmax       ymax \n-89.614306  -4.584722 -75.396111   1.305833 \n\n\n\n¿Cuál es el CRS de la capa?\n\n\nst_crs(inamhi_stat)\n\nCoordinate Reference System:\n  User input: WGS 84 \n  wkt:\nGEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]\n\n\n\n¿Cómo se llama la estación que tiene el Código INAMHI M0033?\n\n\ninamhi_stat[inamhi_stat$Codigo == \"M0033\", c(\"Codigo\", \"Nombre\")] |> \n  st_drop_geometry()\n\n   Codigo            Nombre\n11  M0033 LOJA - LA ARGELIA\n\n\n\nVisualice los datos en un mapa.\n\n\ntmap_mode(\"view\")\nqtm(inamhi_stat, symbols.col = \"Estado\")"
-  },
-  {
-    "objectID": "explore.html#actividad-2.-filtrado-de-vectores",
-    "href": "explore.html#actividad-2.-filtrado-de-vectores",
-    "title": "Unidad 2",
-    "section": "Actividad 2. Filtrado de vectores",
-    "text": "Actividad 2. Filtrado de vectores\nEn su documento de Rmd escriba el código para cargar los datos de la capa “data/gpkg/muestreo.gpkg: Puntos de muestreo” y cargar la capa “data/gpkg/muestreo.gpkg: Demarcación hidrológica Santiago)\n\nsamp_points <- st_read(\"data/gpkg/muestreo.gpkg\", layer = \"Puntos de muestreo\")\n\nReading layer `Puntos de muestreo' from data source \n  `/mnt/data/IKIAM/git/r-spatial_activities/data/gpkg/muestreo.gpkg' \n  using driver `GPKG'\nSimple feature collection with 483 features and 5 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 665639.2 ymin: 9596060 xmax: 807144.7 ymax: 9724872\nProjected CRS: WGS 84 / UTM zone 17S\n\ndhs <- st_read(\"data/gpkg/muestreo.gpkg\", layer = \"Demarcacion hidrogafica Santiago\")\n\nReading layer `Demarcacion hidrogafica Santiago' from data source \n  `/mnt/data/IKIAM/git/r-spatial_activities/data/gpkg/muestreo.gpkg' \n  using driver `GPKG'\nSimple feature collection with 1 feature and 3 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 674823.6 ymin: 9445912 xmax: 924089.7 ymax: 9782338\nProjected CRS: WGS 84 / UTM zone 17S\n\n\nUsando las herramientas hasta ahora aprendidas intente responder las siguientes preguntas:\n\n¿Cuál es el promedio de temperatura del aire de los puntos de muestreo que están bajo la cota de 1000 m?\n\n\nsubset(samp_points, Altitud < 1000) %>%\n  .$ta_media |> mean()\n\n[1] 23.86154\n\n\n\nSin repetir el procedimiento para la pregunta anterior, encuentre el promedio y desviación estándar para los puntos de muestreo que sobrepasan el umbral de 50% de Porcentaje de bosque en el 2010.\n\n\nsamp_points |>\n  group_by(per = Forest_P_2010 > 50) |>\n  summarise(\n    ta_mean = mean(ta_media, na.rm = T),\n    ta_sd = mean(ta_media, na.rm = T)\n    )\n\nSimple feature collection with 2 features and 3 fields\nGeometry type: MULTIPOINT\nDimension:     XY\nBounding box:  xmin: 665639.2 ymin: 9596060 xmax: 807144.7 ymax: 9724872\nProjected CRS: WGS 84 / UTM zone 17S\n# A tibble: 2 × 4\n  per   ta_mean ta_sd                                                       geom\n  <lgl>   <dbl> <dbl>                                           <MULTIPOINT [m]>\n1 FALSE    14.9  14.9 ((665639.2 9705882), (665825.7 9708518), (665980.1 964483…\n2 TRUE     19.5  19.5 ((735159.8 9614194), (736043.8 9596799), (736190.9 960013…\n\n\n\n¿Cuántos puntos de muestreo existen en el área que cubre la Demarcación hidrológica Santiago?\n\n\nsamp_in_dhs <- samp_points[st_intersects(samp_points, dhs, sparse = F), ]\n\nnrow(samp_in_dhs)\n\n[1] 294\n\n\n\nA partir de los puntos seleccionados, ¿Cuál es la extensión máxima de la selección?\n\n\nst_bbox(samp_in_dhs)\n\n     xmin      ymin      xmax      ymax \n 685367.5 9596060.1  807144.7 9724693.7"
-  },
-  {
-    "objectID": "explore.html#actividad-3.-estilos-y-etiquetas-de-vectores",
-    "href": "explore.html#actividad-3.-estilos-y-etiquetas-de-vectores",
-    "title": "Unidad 2",
-    "section": "Actividad 3. Estilos y etiquetas de vectores",
-    "text": "Actividad 3. Estilos y etiquetas de vectores\nUsando datos de la capa “data/gpkg/muestreo.gpkg: Puntos de muestreo” y la Demarcación Hidrográfica del Río Santiago.\n\nSeleccione los puntos que pertenezcan a la Cuenca y que estén a más de 2800 msnm.\n\n\nsamp_points$in_dhs <- st_intersects(samp_points, dhs, sparse = F) & \n  samp_points$Altitud > 2800\n\n\nGrafique los puntos esos con color azul y sobre el polígono de la Cuenca.\nLos demás puntos grafiquelos con un color gris claro y con otra forma diferent\n\n\nqtm(dhs, fill = \"grey30\") +\n  tm_shape(samp_points) +\n  tm_dots(\n    col = \"in_dhs\", palette = c(\"TRUE\" = 'darkblue', \"FALSE\" = 'grey75'), title = \"Conditions?\"\n  )"
+    "text": "Visualización de capas de vectores\n\nCargando datos en capas vectoriales\nExplorando atributos y valores\nSelección de entidades: Consultas y motor de búsqueda\nEstilos y etiquetas de capas vectoriales.\nEjercicios prácticos\n\n\n\n\n\nlibrary(sf)\nlibrary(tidyverse)\nlibrary(tmap)\nlibrary(raster)\n\n\n\n\nA partir del fichero “data/gpkg/estaciones_inamhi.gpkg”, cargue la capa “Estaciones meteorologicas”\n\ninamhi_stat <- st_read(\"data/gpkg/estaciones_inamhi.gpkg\", layer = \"Estaciones meteorologicas\")\n\nReading layer `Estaciones meteorologicas' from data source \n  `/mnt/data/IKIAM/git/r-spatial_activities/data/gpkg/estaciones_inamhi.gpkg' \n  using driver `GPKG'\nSimple feature collection with 138 features and 8 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: -89.61431 ymin: -4.584722 xmax: -75.39611 ymax: 1.305833\nGeodetic CRS:  WGS 84\n\n\nExplore los datos cargados e intente responder las siguientes preguntas:\n\n¿Cuál es el la extensión máxima que alcanza la capa?\n\n\nst_bbox(inamhi_stat)\n\n      xmin       ymin       xmax       ymax \n-89.614306  -4.584722 -75.396111   1.305833 \n\n\n\n¿Cuál es el CRS de la capa?\n\n\nst_crs(inamhi_stat)\n\nCoordinate Reference System:\n  User input: WGS 84 \n  wkt:\nGEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]\n\n\n\n¿Cómo se llama la estación que tiene el Código INAMHI M0033?\n\n\ninamhi_stat[inamhi_stat$Codigo == \"M0033\", c(\"Codigo\", \"Nombre\")] |> \n  st_drop_geometry()\n\n   Codigo            Nombre\n11  M0033 LOJA - LA ARGELIA\n\n\n\nVisualice los datos en un mapa.\n\n\ntmap_mode(\"view\")\nqtm(inamhi_stat, symbols.col = \"Estado\")\n\n\n\n\n\n\n\n\n\n\nEn su documento de Rmd escriba el código para cargar los datos de la capa “data/gpkg/muestreo.gpkg: Puntos de muestreo” y cargar la capa “data/gpkg/muestreo.gpkg: Demarcación hidrológica Santiago)\n\nsamp_points <- st_read(\"data/gpkg/muestreo.gpkg\", layer = \"Puntos de muestreo\")\n\nReading layer `Puntos de muestreo' from data source \n  `/mnt/data/IKIAM/git/r-spatial_activities/data/gpkg/muestreo.gpkg' \n  using driver `GPKG'\nSimple feature collection with 483 features and 5 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 665639.2 ymin: 9596060 xmax: 807144.7 ymax: 9724872\nProjected CRS: WGS 84 / UTM zone 17S\n\ndhs <- st_read(\"data/gpkg/muestreo.gpkg\", layer = \"Demarcacion hidrogafica Santiago\")\n\nReading layer `Demarcacion hidrogafica Santiago' from data source \n  `/mnt/data/IKIAM/git/r-spatial_activities/data/gpkg/muestreo.gpkg' \n  using driver `GPKG'\nSimple feature collection with 1 feature and 3 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 674823.6 ymin: 9445912 xmax: 924089.7 ymax: 9782338\nProjected CRS: WGS 84 / UTM zone 17S\n\n\nUsando las herramientas hasta ahora aprendidas intente responder las siguientes preguntas:\n\n¿Cuál es el promedio de temperatura del aire de los puntos de muestreo que están bajo la cota de 1000 m?\n\n\nsubset(samp_points, Altitud < 1000) %>%\n  .$ta_media |> mean()\n\n[1] 23.86154\n\n\n\nSin repetir el procedimiento para la pregunta anterior, encuentre el promedio y desviación estándar para los puntos de muestreo que sobrepasan el umbral de 50% de Porcentaje de bosque en el 2010.\n\n\nsamp_points |>\n  group_by(per = Forest_P_2010 > 50) |>\n  summarise(\n    ta_mean = mean(ta_media, na.rm = T),\n    ta_sd = mean(ta_media, na.rm = T)\n    )\n\nSimple feature collection with 2 features and 3 fields\nGeometry type: MULTIPOINT\nDimension:     XY\nBounding box:  xmin: 665639.2 ymin: 9596060 xmax: 807144.7 ymax: 9724872\nProjected CRS: WGS 84 / UTM zone 17S\n# A tibble: 2 × 4\n  per   ta_mean ta_sd                                                       geom\n  <lgl>   <dbl> <dbl>                                           <MULTIPOINT [m]>\n1 FALSE    14.9  14.9 ((665639.2 9705882), (665825.7 9708518), (665980.1 964483…\n2 TRUE     19.5  19.5 ((735159.8 9614194), (736043.8 9596799), (736190.9 960013…\n\n\n\n¿Cuántos puntos de muestreo existen en el área que cubre la Demarcación hidrológica Santiago?\n\n\nsamp_in_dhs <- samp_points[st_intersects(samp_points, dhs, sparse = F), ]\n\nnrow(samp_in_dhs)\n\n[1] 294\n\n\n\nA partir de los puntos seleccionados, ¿Cuál es la extensión máxima de la selección?\n\n\nst_bbox(samp_in_dhs)\n\n     xmin      ymin      xmax      ymax \n 685367.5 9596060.1  807144.7 9724693.7 \n\n\n\n\n\n\nUsando datos de la capa “data/gpkg/muestreo.gpkg: Puntos de muestreo” y la Demarcación Hidrográfica del Río Santiago.\n\nSeleccione los puntos que pertenezcan a la Cuenca y que estén a más de 2800 msnm.\n\n\nsamp_points$in_dhs <- st_intersects(samp_points, dhs, sparse = F) & \n  samp_points$Altitud > 2800\n\n\nGrafique los puntos esos con color azul y sobre el polígono de la Cuenca.\nLos demás puntos grafiquelos con un color gris claro y con otra forma diferent\n\n\nqtm(dhs, fill = \"grey30\") +\n  tm_shape(samp_points) +\n  tm_dots(\n    col = \"in_dhs\", palette = c(\"TRUE\" = 'darkblue', \"FALSE\" = 'grey75'), title = \"Conditions?\"\n  )"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Generalidades de los datos geográficos",
+    "title": "Unidad 1: Primeros pasos con SIG’s",
     "section": "",
     "text": "library(sf)"
   },
   {
     "objectID": "index.html#actividad-1.-ubiación-espacial",
     "href": "index.html#actividad-1.-ubiación-espacial",
-    "title": "Generalidades de los datos geográficos",
+    "title": "Unidad 1: Primeros pasos con SIG’s",
     "section": "Actividad 1. Ubiación espacial",
     "text": "Actividad 1. Ubiación espacial\nAbra el mapa de OpenStreetMap en el explorador de Internet. Elija una entidad de la ciudad e intente describir en palabras las propiedades espaciales y atributos.\nEntidad espacial: Parque Calderón\nSe encuentra al sur del Ecuador, en la ciudad de Cuenca, en el centro de la ciudad. En las calles Benigno Malo, Simón Bolívar, Luis Cordero y Mariscal Sucre.\nAtributos: - Forma: Poligonal - Categoría: Zona de recreación - Área aproximada: 100m\\(^2\\)"
   },
   {
     "objectID": "index.html#actividad-2.-escalas-y-mediciones",
     "href": "index.html#actividad-2.-escalas-y-mediciones",
-    "title": "Generalidades de los datos geográficos",
+    "title": "Unidad 1: Primeros pasos con SIG’s",
     "section": "Actividad 2. Escalas y mediciones",
     "text": "Actividad 2. Escalas y mediciones\n\n(En google earth) Acérquese al campus Balzay lo suficiente hasta que la barra de escala muestre “100m”. Luego mide el largo del techo del “Bloque B” (Aulario): ¿Cuál es la longitud del edificio según lo que midió?\n\n84.04m\n\nAcérquese al campus Balzay lo suficiente hasta que la barra de escala muestre “10m”. Luego mida el largo del techo del “Bloque B” (Aulario): ¿Cuál es la longitud del edificio según lo que midió?\n\n85.43m\n\n¿Hay diferencias entre las medidas de uno y otro?¿Por qué?\n\nLa precisón es mayor a medida que la escala es mayor, al inicio no eran tan fácil distinguir entre los límites del edificio. Sin embargo, con una mayor escala, se pudo distinguir mejor estos límites."
   },
   {
     "objectID": "index.html#actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación",
     "href": "index.html#actividad-3.-sistemas-de-referencia-de-coordenadas-georreferenciación",
-    "title": "Generalidades de los datos geográficos",
+    "title": "Unidad 1: Primeros pasos con SIG’s",
     "section": "Actividad 3. Sistemas de Referencia de Coordenadas (Georreferenciación)",
     "text": "Actividad 3. Sistemas de Referencia de Coordenadas (Georreferenciación)\nCompare el resultado de los Bloques 1 y 2. ¿Qué nota de diferente entre ambos resultados? ¿A qué cree que se debe?\nImportamos los datos que vienen por defecto en el paquete sf\n\ndatos <- system.file(\"shape/nc.shp\", package=\"sf\") |> \n  st_read(quiet = TRUE) |> head(6) |>\n  st_centroid()\n\n\nBloque 1\n\n\n# Bloque 1\ndatos |> st_transform(3857) |> st_geometry() |> st_as_text()\n\n[1] \"POINT (-9072322 4360161)\" \"POINT (-9030787 4368427)\"\n[3] \"POINT (-8981871 4357552)\" \"POINT (-8463269 4356810)\"\n[5] \"POINT (-8617259 4358915)\" \"POINT (-8570978 4350488)\"\n\n\n\nBloque 2\n\n\n# Bloque 2\ndatos |> st_transform(4326) |> st_geometry() |> st_as_text()\n\n[1] \"POINT (-81.49806 36.43152)\" \"POINT (-81.12494 36.49124)\"\n[3] \"POINT (-80.68552 36.41266)\" \"POINT (-76.02684 36.4073)\" \n[5] \"POINT (-77.41016 36.42251)\" \"POINT (-76.99441 36.36158)\"\n\n\nLas coordenadas se están representando diferente, esto se a la transformación que se realiza, en el bloque A utilizamos un epsg: 3857 y en el segundo bloque un epsg: 4326."
   },
   {
     "objectID": "index.html#actividad-4.-sistema-de-coordenadas",
     "href": "index.html#actividad-4.-sistema-de-coordenadas",
-    "title": "Generalidades de los datos geográficos",
+    "title": "Unidad 1: Primeros pasos con SIG’s",
     "section": "Actividad 4. Sistema de coordenadas",
     "text": "Actividad 4. Sistema de coordenadas\nEl estadio universitario de la UCE se encuentra en las coordenadas: (0.2018894 S, 78.5041430 W)\n\nCual es el valor de Latitud?\n\n0.2018894\n\nCual es el valor de Longitud?\n\n78.5041430\n\nExpresar esa coordenada en grados minutos y segundos.\n\n\nlat <- 0.2018894\nlon <- 78.5041430\n\nY = paste(0, \"°\", round(lat*60), \"'\", round(((lat*60)%%1)*60, 2), \"\\\"\")\nX = paste(78, \"°\", round((lon%%1)*60), \"'\", round(((lon*60)%%1)*60, 2), \"\\\"\")\n\ncoordenada en X: 78 ° 30 ’ 14.91 “; coordenada en Y: 0 ° 12 ’ 6.8”\n\nHalle la coordenada en la carta mostrada\n\n\nPara hallar la solución: 1° = 60’ = 3600”\n\n\n\n\nEstadio de la Universidad de Cuenca"
   },
   {
     "objectID": "index.html#actividad-5.-codificación-de-src",
     "href": "index.html#actividad-5.-codificación-de-src",
-    "title": "Generalidades de los datos geográficos",
+    "title": "Unidad 1: Primeros pasos con SIG’s",
     "section": "Actividad 5. Codificación de SRC",
     "text": "Actividad 5. Codificación de SRC\nAbra la aplicación web de Google Earth e intente localizar la siguiente coordenada:\nValor 1: 9988610.51 Valor 2: 212665.41.\nLe sugiero que haga todas las preguntas necesarias para poder resolver este reto.\n\nSe realizó la conversión de coordenadas a geográfias, en donde se obtuvo las siguientes:\n\n\nlatitud: -0.10293\nlongitud: -77.58133\n\n¿Qué muestra el mapa en este lugar?\nAparentemente el punto muestra la ubicación de la cascada de San Rafael."
   },
@@ -75,181 +54,6 @@
     "title": "Learning more",
     "section": "",
     "text": "An excellent overview: Reproducible authoring with Quarto - Mine Çetinkaya-Rundel, Feb 2022 - slides, youtube\nA Quarto tip a day in June 2022, from Mine Çetinkaya-Rundel.\n\n\n\nOpenscapes Champions Lessons Series\nOpenscapes Approach Guide\n\nNASA Earthdata Cloud Cookbook\n\nSee many more examples at the quarto gallery!\n\n\n\nAre you making onboarding documentation? Check out The Fay Lab Manual (now in Quarto!) for inspiration on structure - you could also start there and make it your own."
-  },
-  {
-    "objectID": "quarto-workflows/browser.html",
-    "href": "quarto-workflows/browser.html",
-    "title": "From the Browser",
-    "section": "",
-    "text": "A workflow from the browser if good for getting started (since you do not need to install additional software) and for making small contributions, but is definitely limited. Once you feel comfortable here, you can move to a different setup.\nHere’s an example of editing content on an existing page."
-  },
-  {
-    "objectID": "quarto-workflows/browser.html#edit-content-on-an-existing-page",
-    "href": "quarto-workflows/browser.html#edit-content-on-an-existing-page",
-    "title": "From the Browser",
-    "section": "Edit content on an existing page",
-    "text": "Edit content on an existing page\nLet’s change the date on the home page of this website.\nIn your repository, navigate to index.md. Then, click the pencil icon in the top right to edit directly.\n\n\n\n\n\nWe are now in the “Edit file” tab of the editor, where we can make modifications. Let’s change the date to today’s date. Click the “Preview” tab to see your changes. You can even check the “Show diff” box on the right side to see the changes you’ve made.\n\n\n\n\n\nWhile you’re here, see if there are additional changes to the text you’d like to make. Maybe changing the title or author at the top, or for the main text on the home page of the website.\nOur index.md file is written in Markdown, which enables you to make simple text formatting. As you go back and forth from “Edit file” to “Preview”, notice the patterns of how the Markdown text looks when it is as source (“Edit file”) and when it is formatted (“Preview”). For example, in Markdown, you can make text as a header with # symbols, bold or italic with * symbols, and hyperlinks with [](). Notice that spacing is important: for example, there are carriage returns (when you hit the “return” key) before any bullet points. You can learn the short list of Markdown rules here: https://quarto.org/docs/authoring/markdown-basics."
-  },
-  {
-    "objectID": "quarto-workflows/browser.html#commit-and-publish",
-    "href": "quarto-workflows/browser.html#commit-and-publish",
-    "title": "From the Browser",
-    "section": "Commit and publish",
-    "text": "Commit and publish\nCommit your changes by scrolling to the bottom of the page and writing a commit message - a note to yourself and others about what changes you made. Write your commit message and then click the green “Commit changes” button.\n\n\n\n\n\nNow, click back to the main page of your GitHub repository. You should see the orange dot confirming your website is published. You’ll have to wait for the GitHub Action to tell quarto to build your site for you to see the update, but it will be there!"
-  },
-  {
-    "objectID": "quarto-workflows/browser.html#limitations",
-    "href": "quarto-workflows/browser.html#limitations",
-    "title": "From the Browser",
-    "section": "Limitations",
-    "text": "Limitations\nWhile awesome that we can edit using GitHub directly from the browser, there are obvious limitations. One is that to see your edits show up in your book, you have to publish using the GitHub Action. This is slow. Another limitation is that we can only work on one file at a time and commit them each separately, which also is slow. Using additional software can make things much better, as we explore in subsequent chapters."
-  },
-  {
-    "objectID": "quarto-workflows/index.html",
-    "href": "quarto-workflows/index.html",
-    "title": "Quarto workflows",
-    "section": "",
-    "text": "How do you work in Quarto? You can use whichever tool you’re comfortable with (RStudio, Jupyter, GitHub, VS Code, etc). Developing your quarto site will have the same basic workflow, no matter which tool you use. It is very iterative, and each is explored more below.\n\nAuthoring: write text, code, images, etc in a file. Supported files include .md, .Rmd, .qmd, .ipynb…\nUpdate _quarto.yml as needed (for example, if you’ve created a new file you’d like included in your site)\nRender individual files and/or the whole website\nRepeat, repeat, repeat\nCommit and push your website to GitHub, your updates will publish automatically!\nRepeat all of the above to make the website as you’d like!\n\nNote: if editing from your internet browser we won’t render in Step 3. That step will not be separate, but combined with Step 5, which will only require a commit, not a push."
-  },
-  {
-    "objectID": "quarto-workflows/index.html#authoring",
-    "href": "quarto-workflows/index.html#authoring",
-    "title": "Quarto workflows",
-    "section": "Authoring",
-    "text": "Authoring\nAs an author, you have a lot of options of how your text will be formatted, arranged, and interlinked. You will be writing in Markdown, which is a lightweight text formatting language. The Quarto documentation about authoring introduces markdown-basics that will get you started. Also see Mine Çetinkaya-Rundel’s A Quarto tip a day.\nEach page of our site has a similar first few lines - this YAML, like we saw in our _quarto.yml and it is indicated by two sets of 3 dashes --- :\n---\ntitle: My title\n---\nYou’re able to add more features to individual pages by including it in the YAML, which for the most part here only includes a title. See Quarto excecution options for more information of what you can include in the YAML."
-  },
-  {
-    "objectID": "quarto-workflows/index.html#update-_quarto.yml",
-    "href": "quarto-workflows/index.html#update-_quarto.yml",
-    "title": "Quarto workflows",
-    "section": "Update _quarto.yml",
-    "text": "Update _quarto.yml\nLet’s have a closer look at the _quarto.yml file.\nThis type of file (.yml or .yaml) is written in YAML (“Yet Another Markup Language”). You’ll be able to shift the arrangement of webpages by reordering/adding/deleting them in the _quarto.yml file following the patterns you see in this example.\n\n\n\n_quarto.yml and website side-by-side\n\n\nNotice that there are multiple ways in the _quarto.yml for you to include a file in your website. For example, in the above image, the “First Observations” we see in the left sidebar of the published website (right image) is represented in _quarto.yml (left image) over two lines, with line 36 indicating the file reference and line 37 indicating the text to show up in the left sidebar. However, “From RStudio” is only represented in one line of _quarto.yml, on line 43. This represents two strategies for including a file in your website. By default, the title of a specified file will show up in the website’s sidebar, which is what is happening with the “From RStudio” example. If you would like more control over what is written in the sidebar vs the title of your files, then the approach we took with “First Observations” is what you’ll want to do: you’ll see that only “First Observations” shows up in the sidebar as we specified in _quarto.yml, but the page’s title says “First Observations & Setup” (which in our preference was too long for the sidebar).\n\n\n\n\n\n\nNote\n\n\n\nAs you modify _quarto.yml, the most important thing to know is that spacing matters. Pay attention to whether text is indented by one, two, four, or other spaces, and make sure you follow it; if your site is not looking as expected it is likely a silent error in your YAML. Some text editors like RStudio provide debugging support for YAML and are highly recommended to save you time and heartache."
-  },
-  {
-    "objectID": "quarto-workflows/index.html#install-quarto",
-    "href": "quarto-workflows/index.html#install-quarto",
-    "title": "Quarto workflows",
-    "section": "Install Quarto",
-    "text": "Install Quarto\nhttps://quarto.org/docs/get-started/ describes how to install Quarto, which will depend on your operating system. We’ll walk through installation for each tool in the next chapters."
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html",
-    "href": "quarto-workflows/jupyter.html",
-    "title": "From Jupyter",
-    "section": "",
-    "text": "You can interact with Quarto through JupyterLab or JupyterHub. Your Jupyter setup will involve .ipynb notebooks and the command line. Quarto’s JupyterLab tutorials has great instructions on getting started with JupyterLab, including computations and authoring.\nHere we will demonstrate how to work with this Quarto tutorial site in JupyterHub and add a Jupyter Notebook (.ipynb file). This example uses the NASA-Openscapes JupyterHub that already has all python environments as well as Quarto installed."
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#setup",
-    "href": "quarto-workflows/jupyter.html#setup",
-    "title": "From Jupyter",
-    "section": "Setup",
-    "text": "Setup\n\nJupyterHub\nOur JupyterHub is already setup with python environments as well as Quarto (through nasa-openscapes/corn), so there is no further installation required.\n\n\nClone your repo\nYou’ll start by cloning your repository into JupyterHub. Do this by opening a terminal (File > New > Terminal). In the Terminal, git clone your repository and cd into it:\ngit clone https://github.com/openscapes/quarto-website-tutorial\ncd quarto-website-tutorial\n\n\nInstall Quarto\nNot needed - Quarto is already installed on the NASA-Openscapes JupyterHub! But to install elsewhere you would do so from https://quarto.org/docs/get-started/.\nQuarto is a Command Line Interface (CLI), like git. Once download is complete, follow the installation prompts on your computer like you do for other software. You won’t see an application to click on when it is installed.\nNote for Mac users: If you do not have administrative privileges, please select “Install for me only” during the Destination Selection installation step (you will first click on “Change Install Location” at the Installation Type step).\nYou can check to confirm that Quarto is installed properly from the command line:\nquarto check install\n\n\n\n\n\n\nAdditional checks\n\n\n\n\n\nYou can also run:\n\nquarto check knitr to locate R, verify we have the rmarkdown package, and do a basic render\nquarto check jupyter to locate Python, verify we have Jupyter, and do a basic render\nquarto check to run all of these checks together\n\n\n\n\n\n\n\n\n\n\nHistorical aside: Install Quarto in a docker container\n\n\n\n\n\nIn Summer 2021 some NASA Mentors trying to install quarto locally was not an option, but they were able to install it inside a container using the following Dockerfile:\n#| fold: true\n#| summary: \"Show the Dockerfile\"\n\n##############################\n# This Dockerfile installs quarto and then runs quarto serve against the\n# internal /home/quarto/to_serve.\n#\n# BUILD\n# -----\n# To build this container, run\n#\n#     docker build -t quarto_serve .\n#\n# Add the --no-cache option to force docker to build fresh and get the most\n# recent version of quarto.\n#\n#\n# RUN\n# ---\n# 1. Find the directory you want quarto to serve. Let's call this /PATH/TO/earthdata-cloud-cookbook.\n# 2. Run docker:\n#\n#     docker run --rm -it -p 4848:4848 -v /PATH/TO/earthdata-cloud-cookbook:/home/quarto/to_serve quarto_serve\n#\n# 3. Open your browser and go to http://127.0.0.1:4848/\n#\n##############################\n\nFROM ubuntu:hirsute\n\n######\n# Install some command line tools we'll need\n######\nRUN apt-get update\nRUN apt-get -y install wget\nRUN apt-get -y install gdebi-core\nRUN apt-get -y install git\n\n\n######\n# Install quarto (https://quarto.org/)\n######\n\n# This is a quick and dirty way of getting the newest version number from\n# https://github.com/quarto-dev/quarto-cli/releases/latest. What's happening is\n# we're pulling the version number out of the redirect URL. This will end up\n# with QVER set to something like 0.2.11.\nRUN QVER=`wget --max-redirect 0 https://github.com/quarto-dev/quarto-cli/releases/latest 2>&1 | grep \"Location\" | sed 's/L.*tag\\/v//' | sed 's/ .*//'` \\\n    && wget -O quarto.deb \"https://github.com/quarto-dev/quarto-cli/releases/download/v$QVER/quarto-$QVER-amd64.deb\"\nRUN gdebi -n quarto.deb\n\n# Run this to make sure quarto installed correctly\nRUN quarto check install\n\n\n######\n# Create a non-root user called quarto\n######\nRUN useradd -ms /bin/bash quarto\nUSER quarto\nRUN mkdir /home/quarto/to_serve\nWORKDIR /home/quarto/to_serve\n\n\n######\n# Start quarto serve\n######\n\nCMD quarto serve --no-browse --host 0.0.0.0 --port 4848"
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#quarto-preview",
-    "href": "quarto-workflows/jupyter.html#quarto-preview",
-    "title": "From Jupyter",
-    "section": "Quarto preview",
-    "text": "Quarto preview\nLet’s start off by previewing our quarto site locally. In Terminal, type quarto preview, which will provide a URL with a preview of our site!\nquarto preview\n# Preparing to preview\n# Watching files for changes\n# Browse at https://openscapes.2i2c.cloud/user/jules32/proxy/4593/\nCopy this URL into another browser window; and arrange them so you can see them both. I make a bit more space in Jupyter by collapsing the left file menu by clicking on the file icon at the top of the left sidebar.\n\n\n\n\n\n\nMake a small change and preview it\nNow we’ll be able to see live changes in the preview as we edit in our .md files. Let’s try it: Change the date in index.md by opening it from the file directory. Change to today’s date, and save. Your preview window will refresh automatically! If it does not, you can also refresh the page manually. The refreshed previewed site will now display your changes!"
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#create-a-new-.ipynb-page",
-    "href": "quarto-workflows/jupyter.html#create-a-new-.ipynb-page",
-    "title": "From Jupyter",
-    "section": "Create a new .ipynb page",
-    "text": "Create a new .ipynb page\nLet’s add a new page to our site. Instead of an .md file like the others, let’s add a .ipynb file.\nFile > New > Notebook. Accept the default kernel by clicking Select.\n\nFirst chunk: raw yaml\nBy default, this Notebook will give us a first chunk that is code. Let’s change it to raw so that we can write our yaml at the top.\n\n\n\n\n\nIn our Raw code chunk, let’s write the title of this document. We need three dashes --- on separate lines preceding and following the title:, which you can name as you’d like.\n---\ntitle: Python Example\n---\n\n\nSecond chunk: Markdown\nLet’s add a new chunk that is Markdown so we can write some description of what this page will be.\nClick the + symbol at the top of the document, and this will add a new chunk, which by default again is a Code chunk. Change it to a Markdown Chunk following the steps we did above when switching to Raw.\nHere, write a little bit of text in Markdown. Since your title is effectively a level-1 header, avoid using level-1 headers in the rest of your document. Here is some example text I wrote:\n## Introduction\n\nThis example has some Python code that will be a part of our Quarto site.\n\n\nThird chunk: Code\nNow let’s create a new chunk with the default Code setting.\nPaste the following code (or write some of your own to test):\n#| label: fig-polar\n#| fig-cap: \"A line plot on a polar axis\"\nimport numpy as np\nimport matplotlib.pyplot as plt\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()\nNow, go ahead and execute this code chunk like you normally would, by clicking the cursor in a code block and clicking the sideways “play” triangle to run the selected cells (and advance to the next cell). This code produces a plot.\nNote that the code runs as it normally would; the code options in the comments are just comments.\n\n\nSave your file\nSave your document - I’ll call mine python-example.ipynb in the main repository."
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#update-_quarto.yml",
-    "href": "quarto-workflows/jupyter.html#update-_quarto.yml",
-    "title": "From Jupyter",
-    "section": "Update _quarto.yml",
-    "text": "Update _quarto.yml\nNow we’ll add python-example.ipynb to our _quarto.yml file; this is where we register of all files to include in our site. Let’s add it after the section called “Basic Workflows”.\nOpen _quarto.yml by clicking on it from the file directory.\nScroll down to review the current contents in the sidebar: section. It’s there we see all the file arrangement that we see in the previewed site.\nAdd - python-example.ipynb to line 46, making sure that your indentation aligns with the other pages.\n\n\n\n\n\nYou’ll see that our new page shows up in our Preview, and the code is executed since we did that in the Jupyter Notebook itself. By default, Quarto will not execute code chunks since your computations will likely become more complex and you will want to control when they are executed (or “run”).\nSince Quarto is still previewing our website and the python-example.ipynb, the plot also displays in the notebook after the code is run and the file is saved, as shown below.\n\n\n\n\n\nSo, your normal workflow for creating and running code blocks in your Jupyter Notebook is the same one you’ll use as Quarto displays the preview."
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#quarto-render",
-    "href": "quarto-workflows/jupyter.html#quarto-render",
-    "title": "From Jupyter",
-    "section": "Quarto render",
-    "text": "Quarto render\nSo far we have used Quarto preview to view our website as we develop it. Quarto render will build the html elements of the website that we can see when we preview. Rendering will format the markdown text and code nicely as a website (or however is indicated in the _quarto.yml).\nBy default, Quarto render does not execute code in a Jupyter notebook. It will never run .ipynb files unless you tell it to.\n\nRender whole notebook\nIf you would like it to specifically execute code in a Jupyter notebook, you can do so in Terminal.\nOur Terminal is still busy previewing our website, so let’s open a new Terminal.\nFile > New > Terminal. Then type:\ncd quarto-website-tutorial\nquarto render python-example.ipynb --execute"
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#authoring-tips",
-    "href": "quarto-workflows/jupyter.html#authoring-tips",
-    "title": "From Jupyter",
-    "section": "Authoring tips",
-    "text": "Authoring tips\nQuarto.org has details about authoring, including specific instructions about authoring in Jupyter: quarto.org/docs/reference/cells/cells-jupyter."
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#commit-and-push",
-    "href": "quarto-workflows/jupyter.html#commit-and-push",
-    "title": "From Jupyter",
-    "section": "Commit and push!",
-    "text": "Commit and push!\nCommitting and pushing will make the changes you see locally live on your website (using the GitHub Action we set up earlier)."
-  },
-  {
-    "objectID": "quarto-workflows/jupyter.html#troubleshooting",
-    "href": "quarto-workflows/jupyter.html#troubleshooting",
-    "title": "From Jupyter",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\nMy changes don’t show up in preview\nMake sure you’ve saved your file! There might be a slight delay depending on your JupyterHub/Lab setup.\n\n\nQuarto render hangs / does not complete\nCheck the specific notebook, are there any `—` throughout to denote line breaks rather than yaml? They might be causing the issue; consider deleting those.\nAlso check how long the first raw cell is. Are there level-1 headers (#)? Try removing them."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html",
-    "href": "quarto-workflows/rstudio.html",
-    "title": "From RStudio",
-    "section": "",
-    "text": "The RStudio software (called an IDE, integrated development environment) is an excellent way to edit files and interface with GitHub. Plus, as it is made by the same folks who make Quarto, it has many integrated features for streamlining your workflow with Quarto, including how it previews your edits and provides debugging support for yaml! Quarto's RStudio tutorials has great instructions on getting started with RStudio, including computations and authoring.\nHere is what you’ll need to do to set up and use RStudio with Quarto."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#setup",
-    "href": "quarto-workflows/rstudio.html#setup",
-    "title": "From RStudio",
-    "section": "Setup",
-    "text": "Setup\n\nRStudio and GitHub\nFor a workflow with RStudio and GitHub on your local computer, you will need four things:\n\nR\nRStudio\nGit\nGitHub\n\nFollow the UCSB MEDS Installation Guide for detailed instructions on how to create accounts, download, install, and configure on Mac and Windows. This takes about 20 minutes. (For an even more detailed walk-through, see Allison Horst’s ESM 206 Google Doc).\n\n\nClone your repo\nYou’ll start by cloning your repository into RStudio.\nFile > New Project > Version Control > Git > paste your repository name.\nR for Excel Users: Clone your repository using RStudio has detailed instructions and screenshots of these steps.\n\n\nInstall Quarto\nNext, you’ll install Quarto: https://quarto.org/docs/get-started/. After downloading, follow the installation wizard on your computer. When it is complete, you won’t see an application or any new software, but it is now available to RStudio (as well as all other applications on your computer, including the command line).\n\n\nRStudio orientation\nNow let’s take a moment to get oriented. This is an RStudio project, which is indicated in the top-right. The bottom right pane shows all the files in your project; everything we’ve cloned from GitHub. We can open any RStudio project by opening its .Rproj file, or from RStudio File > Open Project ….\n\n\n\nRStudio IDE highlighting the project name and files pane\n\n\n\n\nVisual Editor\nThe RStudio Visual Editor is quite new and has features that improve your writing experience. Working in the Visual Editor feels a bit like working in a Google Doc.\nHere’s an example showing the same file in the original Source Editor with content in markdown format and in the Visual Editor with content that looks more like it will appear in a live site. You can switch freely between these modes.\n\n\n\n\n\n\nRStudio IDE highlighting the Source Editor\n\n\n\n\n\n\n\nRStudio IDE highlighting the Visual Editor\n\n\n\n\n\nAlready have some content formatted in a Google Doc? You can copy-paste it into the Visual Editor and most formatting will be retained.\nThe editing bar provides familiar point and click access to text formatting options like bulleted or numbered lists.\n\n\n\nRStudio IDE highlighting the point and click editing bar\n\n\n\nKeyboard shortcuts\nThe Visual Editor also lets you use many keyboard shortcuts that might be familiar for adding boldface (command-b), italics (command-i), or headers. On a Mac, option-command-2 will make a level 2 header. Try it with option-command-1, or option-command-0 for normal text!\n\n\nInsert an image or figure\nTo insert an image (called a figure in Quarto), click the image icon. This brings up a window in which we can select the image, set its alignment, give it a caption and alt text, hyperlink it, or edit other metadata.\n\n\n\nInsert image or figure using the Visual Editor\n\n\nOnce an image is added, clicking on that image gives us editing options. We can resize it dynamically by clicking in the image and dragging a corner or side to resize. When an image is selected, its dimensions are displayed for editing. Clicking on the gray ellipsis to the right of the dimensions opens the pop-up window to access more metadata edits.\n\n\nInsert a table\nSimilar to adding an image, to insert a table, we click the Table dropdown."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#quarto-render",
-    "href": "quarto-workflows/rstudio.html#quarto-render",
-    "title": "From RStudio",
-    "section": "Quarto render",
-    "text": "Quarto render\nIn the Build tab in the top-right pane, click “Render Website”. This will build the .html files and preview your website. It’s equivalent to “knitting” in RMarkdown.\nNote that you can also click “Preview Website”. With “Render Website” in RStudio, Quarto is able to render and preview in one step.\nIf you’d ever like to stop the preview, in the bottom-left, click on the Jobs tab and then the red Stop button.\n\nMake a small change and render it\nClick on index.md. This will open this markdown file in a fourth pane; the editor pane. Make a small change, for example change to today’s date on Line 4. Then, save your file; there is a disc icon at the top of the file.\nThen, render this file: press “Render” which is to the right of the disc icon that saves the file. This will render only this single file, as opposed to rerendering the whole website like when we clicked “Render Website” in the top right pane. Checking Render on Save (between the disc icon and the Render button) is a great strategy for doing this in one step."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#create-a-new-.rmd-page",
-    "href": "quarto-workflows/rstudio.html#create-a-new-.rmd-page",
-    "title": "From RStudio",
-    "section": "Create a new .Rmd page",
-    "text": "Create a new .Rmd page\nNew > RMarkdown document > OK\nThe starter RMarkdown document has some R code inside: it displays a summary of the cars dataset that is pre-loaded into R (summary(cars)) and plots the pressure data that is also pre-loaded (plot(pressure)).\nSave this document as r-example.rmd."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#update-_quarto.yml",
-    "href": "quarto-workflows/rstudio.html#update-_quarto.yml",
-    "title": "From RStudio",
-    "section": "Update _quarto.yml",
-    "text": "Update _quarto.yml\nNow we’ll add r-example.rmd to our _quarto.yml file; this is where we register all files to include in our site. Let’s add it after the section called “Quarto Workflows”.\nOpen _quarto.yml by clicking on it from the file directory.\nScroll down to review the current contents in the sidebar: section under contents:. It’s there we see all the file arrangement that we see in the previewed site.\nAdd - r-example.rmd in its own line, making sure that your indentation aligns with the other pages.\nFrom the Build tab, clicking Preview Website will recreate your website!"
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#authoring-tips",
-    "href": "quarto-workflows/rstudio.html#authoring-tips",
-    "title": "From RStudio",
-    "section": "Authoring tips",
-    "text": "Authoring tips\nChecking “Render on Save” is really helpful when iterating quickly on a document.\nIf the document is very code-heavy, consider using freeze that will not run the code each time.\nQuarto.org has details about authoring, including specific instructions about authoring in RStudio."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#commit-and-push",
-    "href": "quarto-workflows/rstudio.html#commit-and-push",
-    "title": "From RStudio",
-    "section": "Commit and push!",
-    "text": "Commit and push!\nCommitting and pushing will make the changes you see locally live on your website (using the GitHub Action we set up earlier)."
-  },
-  {
-    "objectID": "quarto-workflows/rstudio.html#troubleshooting",
-    "href": "quarto-workflows/rstudio.html#troubleshooting",
-    "title": "From RStudio",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\nIf you have trouble rendering your website after for example changing the extenstion of a file from .md to .qmd, refreshing your RStudio often helps. Do this by clicking the project name at the upper right of the RStudio window (in this case, quarto-website-tutorial), and underneath the “close project” section, click the same name of your project: quarto-website-tutorial. This will relaunch your whole project afresh."
   },
   {
     "objectID": "transition-from-rmarkdown.html",
