@@ -1,0 +1,501 @@
+---
+title: "Unidad 3: Álgebra de Mapas y Geoprocesamiento"
+---
+
+# Manipulando datos espaciales
+
+-   La tabla de atributos
+-   Herramientas de cálculo
+    -   Funciones y variables
+-   Trabajo con las geometrías
+-   Conversión de geometrías
+-   Conversión de modelos: `raster <-> vector`
+
+## Paquetes utilizados en esta lección
+
+```{r}
+#| warning: false
+#| message: false
+
+library(sf)
+library(tidyverse)
+library(tmap)
+library(raster)
+library(mapedit)
+library(magrittr)
+library(stars)
+library(units)
+```
+
+## Actividad 1. Clases, atributos y valores
+
+-   Cargue las capas ocurrencias y Mask del fichero data/gpkg/tapir.gpkg
+
+```{r}
+#| output: false
+tapir_mask <- st_read("data/gpkg/tapir.gpkg", layer = "mask")
+tapir_ocu <- st_read("data/gpkg/tapir.gpkg", layer = "ocurrencias")
+```
+
+-   Explore los datos y determine qué tipo de dato es cada campo.
+
+```{r}
+glimpse(tapir_mask)
+```
+
+> Para el caso de `mask`, solo tiene un campo y es tipo `character`
+
+```{r}
+glimpse(tapir_ocu)
+```
+
+> La capa de `ocurrencias` presenta 6 campos y en su mayoría son `characters`, también hay `logical` y `datetime`.
+
+-   ¿Que sistema de coordenadas tienen las capas?
+
+> La capa de mask, tiene un epsg: `r st_crs(tapir_mask)$epsg`, mientras que la capa ocurrencias, tiene un epsg: `r st_crs(tapir_ocu)$epsg`.
+
+-   ¿Qué tipos de operaciones se pueden hacer con esos tipos de datos?
+
+> Con la columna tipo `logical` se puede realizar operaciones booleanas, somo sumar los verdaderos. Con las fechas probablemente una diferencia de fechas o conteo por un período de tiempo (e.g. por meses), una operación similar se podría hacer por Especie.
+
+------------------------------------------------------------------------
+
+## Actividad 2. Cálculos avanzados: Funciones personalizadas
+
+**Usando las capas del fichero "data/gpkg/muestreo.gpkg":**
+
+```{r}
+#| output: false
+muestreo <- st_read("data/gpkg/muestreo.gpkg")
+```
+
+-   Agregar una columna que contenga las coordenadas X y Y en el SRC UTM-17S.
+
+```{r}
+#| message: false
+muestreo$X <- st_coordinates(muestreo)[, "X"]
+muestreo$Y <- st_coordinates(muestreo)[, "Y"]
+
+knitr::kable(head(muestreo))
+```
+
+-   Agregar una columna nueva que contenga los pesos ficticios entre 70 y 120 kg, asignados de manera aleatoria a cada registro
+
+```{r}
+muestreo$Weight <- sample(70:120, size = nrow(muestreo), replace = T)
+
+knitr::kable(head(muestreo))
+```
+
+-   Agregar una columna nueva que contenga la zona UTM a la que pertenecen
+
+```{r}
+#| warning: false
+GetUtmZone = function(x){
+  centroid = st_centroid(x)
+  longitude = st_coordinates(centroid)[,1]
+  latitude = st_coordinates(centroid)[,2]
+  zone_number = floor(((longitude + 180) / 6) %% 60) + 1
+  zone_letter = ifelse(latitude >= 0,
+                   	'N', #if true
+                   	'S') #else
+  return(paste0(zone_number, zone_letter))
+}
+
+muestreo$Zone <- st_transform(muestreo, 4326) |> st_geometry() |> GetUtmZone()
+
+knitr::kable(head(muestreo))
+```
+
+-   Agregue una columna nueva que contenga un identificador para los puntos que pertenecen al hemisferio sur y que caigan dentro del área que cubre la Demarcación hidrográfica Santiago
+
+```{r}
+DHS <- st_read(
+  "data/gpkg/muestreo.gpkg", layer = "Demarcacion hidrogafica Santiago",
+  quiet = T
+)
+
+muestreo$dhs_sur <- st_intersects(muestreo, DHS, sparse = F) & muestreo$Zone == "17S"
+
+knitr::kable(head(muestreo))
+```
+
+
+------------------------------------------------------------------------
+
+
+## Actividad 3. Edición de capas de líneas y polígonos
+
+-   Cargue la librería `mapedit`
+
+```{r}
+#| eval: false
+library(mapedit)
+```
+
+-   Ejecute la función `mapedit::drawFeatures()`
+
+-   Acérquese a la ciudad de Cuenca, específicamente al Parque Calderón (Parque central de Cuenca)
+
+-   Trace puntos de los 2 o 3 edificios representativos que que pueda reconocerlos fácilmente alrededor del Parque.
+
+-   Trace un rectángulo que cubra hasta tres cuadras alrededor del parque calderón.
+
+-   Trace las vías hasta dos cuadras alrededor del Parque.
+
+-   Guarde el resultado en una capa, con SRC EPSG:4326 (Latitud y Longitud).
+
+```{r}
+#| eval: false
+parque_calderon <- drawFeatures()
+```
+
+
+::: {.column width="48%"}
+
+![mapdrawing](images/mapdrawing.png){alt="Edición de puntos, líneas y polígonos" fig-align="center" width="90%"}
+
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| output: false
+parque_calderon <- st_read("data/gpkg/parque_calderon.gpkg", layer = "mapdrawing_res")
+```
+
+
+```{r}
+knitr::kable(head(parque_calderon))
+```
+
+:::
+
+
+
+-   Agregue una columna con el nombre o referencia de las vías dibujadas.
+
+-   Explore el resultado y discuta sobre las propiedades de esta capa.
+
+Para esto visualizaremos el mapa con `tmap` y señalaremos las ids de las vías para asignar el nombre que le corresponde:
+
+```{r}
+#| message: false  
+tmap_mode("view")
+filter(parque_calderon, st_geometry_type(parque_calderon) == "LINESTRING") |> 
+  qtm()
+```
+
+
+> Asignación de nombres a las vías
+
+```{r}
+parque_calderon %<>%
+  mutate(
+    vias_id = case_when(
+      `X_leaflet_id` == 2358 ~ "Gran Colombia",
+      `X_leaflet_id` == 2082 ~ "Simón Bolívar",
+      `X_leaflet_id` == 2058 ~ "Mariscal Sucre",
+      `X_leaflet_id` == 2154 ~ "Presidente Córdova",
+      `X_leaflet_id` == 2174 ~ "Juan Jaramillo",
+      `X_leaflet_id` == 2238 ~ "Padre Aguirre",
+      `X_leaflet_id` == 2266 ~ "Benigno Malo",
+      `X_leaflet_id` == 2292 ~ "Luis Cordero",
+      `X_leaflet_id` == 2316 ~ "Presidente Borrero",
+      T ~ "Otras entidades"
+    )
+  )
+```
+
+> Es un tipo de multi-geometría, es decir tiene una mezcla de polígonos, puntos y líneas. A pesar de que R lo puede procesar, otros programas como Qgis pueden necesitar que estás geometrías estén separadas.
+
+-   Separe las entidades por geometrías y guarde como capas separadas en un fichero `*.gpkg`.
+
+```{r}
+#| eval: false
+filter(parque_calderon, st_geometry_type(geometry) == "LINESTRING") |>
+  st_write("data/gpkg/parque_calderon.gpkg", layer = "pc_lines")
+
+filter(parque_calderon, st_geometry_type(geometry) == "POINT") |>
+  st_write("data/gpkg/parque_calderon.gpkg", layer = "pc_points")
+
+filter(parque_calderon, st_geometry_type(geometry) == "POLYGON") |>
+  st_write("data/gpkg/parque_calderon.gpkg", layer = "pc_polygons")
+```
+
+
+------------------------------------------------------------------------
+
+
+## Actividad 4. Geometrías derivadas
+
+  - Cargue la capa puntos disponible en el fichero quinta_balzay.gpkg
+  
+```{r}
+#| output: false
+quinta_balzay <- st_read("data/gpkg/quinta_balzay.gpkg")
+```
+
+  - Explore las propiedades de la capa y haga las preguntas necesarias para entender los atributos.
+  - Genere una o varias capas de según corresponda. Si es necesario convierta esas geometrías a geometrías más complejas.
+
+> Para evitar que las geometrías se agrupen incorrectamente, hay que aplicar el argumento `do_union = F` en `summarise()`
+
+
+::: {.column width="40%"}
+
+*Formación de geometrías a polígonos*
+
+```{r}
+polygons_qb <- quinta_balzay |>
+  filter(feature_type == "polygon") |>
+  group_by(id) |>
+  summarise(do_union = F) |> 
+  st_cast("POLYGON")
+```
+
+*Formación de geometrías a líneas*
+
+```{r}
+lines_qb <- quinta_balzay |>
+  filter(feature_type == "polyline") |>
+  group_by(id) |>
+  summarise(do_union = F) |> 
+  st_cast("LINESTRING")
+```
+
+*Extracción de puntos*
+
+```{r}
+points_qb <- quinta_balzay |>
+  filter(feature_type == "point")
+```
+
+:::
+
+::: {.column width="55%"}
+
+```{r}
+qtm(polygons_qb, fill = "id") +
+  qtm(lines_qb) + qtm(points_qb)
+```
+
+:::
+
+
+  - Explore los resultados y comente lo que descubrió.
+
+> Los polígonos hacen referencia a los aularios y a las oficinas cerca de hídrica, las líneas a las vías dentros del campus balzay y los puntos a zonas importantes de la casa antigua de la quinta balzay (e.g. laboratorios).
+
+
+------------------------------------------------------------------------
+
+
+## Actividad 5. Raster a vector
+
+  - Cargue la capa de Temperatura_3.tif y convierta las clases a polígonos
+  - A partir de la capa Temperatura_2.tif, genere isolíneas cada 5 grados de temperatura.
+
+```{r}
+at_3 <- raster("data/tif/Temperatura_3.tif")
+at_2 <- raster("data/tif/Temperatura_2.tif")
+```
+
+> A continuación se recorta las capa de temperatura con la de muestreo, para ahorrar tiempo en el procesamiento de las capas.
+
+- Isolíneas cada 5 grados
+
+```{r}
+at_2_iso <- at_2 |> crop(muestreo) |> 
+  cut(breaks = seq(-5, 35, 5), include.lowest = TRUE, right = FALSE) |>
+  raster::rasterToContour() |>
+  st_as_sf()
+```
+
+- Polígonos de las clases
+
+```{r}
+at_3_poly <- at_3 |> crop(muestreo) |> st_as_stars() |> st_as_sf(merge = T)
+```
+
+```{r}
+#| layout-ncol: 3
+qtm(at_2_iso, lines.col = "level")
+
+qtm(at_3_poly, fill = "Temperatura_3")
+
+qtm(at_3_poly, fill = "Temperatura_3") +
+  qtm(at_2_iso, lines.col = "level")
+```
+
+
+------------------------------------------------------------------------
+
+# Geoprocesamiento y Álgebra de mapas
+
+- Geoprocesamiento (Vector)
+  - Análisis de solape
+  - Análisis de proximidad
+  - Análisis de agregación
+  
+- Álgebra de mapas (Raster)
+  - Operaciones locales
+  - Operaciones zonales
+  - Operaciones globales
+
+
+-----------------------------------------------------------------------
+
+## Actividad 5. Raster a vector
+
+**Una laguna de interés de un estudio se ecuentra en la siguiente coordenada: POINT(-79.27317 -2.85857). Usando las capas del fichero geoprocesos.gpkg, encuentre las respuestas a las siguientes preguntas:**
+
+Creamos el punto espacial e importamos la capa de geoprocesos.gpkg
+
+```{r}
+#| output: false
+laguna_point <- "POINT(-79.27317 -2.85857)" |> st_as_sfc(crs = 4326) |>
+  st_as_sf() |> st_transform(crs = 32717)
+
+water_bodies <- st_read("data/gpkg/geoprocesos.gpkg", layer = "cuerpos de agua") |>
+  st_transform(crs = 32717)
+```
+- ¿En un radio de 6 Km desde el punto, cuántos cuerpos de agua naturales existen?
+
+```{r}
+st_is_within_distance(
+  x = laguna_point, y = water_bodies, 
+  dist = units::set_units(6,"km"),
+  sparse=FALSE
+) %>% sum()
+```
+
+> Existen 126 cuerpoos de agua al rededor de los 6km de la laguna de interés.
+
+
+- ¿Cuál es el área que cubren todos ellas?
+
+```{r}
+lag_buff <- st_buffer(laguna_point, dist = units::set_units(6, "km"))
+
+lag_buff |>
+  st_area() |> units::set_units("km^2")
+```
+
+> Tiene un área total de 113.05 km$^2$
+
+- ¿Cuál es el rango de temperaturas que existen en la zona de influencia? (Use la capa de Puntos de muestreo disponible en muestreo.gpkg)
+
+```{r}
+qtm(muestreo) + 
+  qtm(lag_buff)
+
+muestreo[lag_buff, ] |> pull(ta_media) |> mean()
+```
+
+> Tiene una media de 8°C
+
+- ¿Cuánto espacio del radio de 6 km, no está cubierto por cuerpos de agua?
+
+
+```{r}
+st_difference(
+  lag_buff, st_union(water_bodies)
+) %>% st_area() %>% 
+  units::set_units("km^2")
+```
+
+> No están cubiertos por agua 106.4 km$^2$
+
+-------------------------------------------------------------------------
+
+
+## Actividad 6. Álgebra de mapas
+
+**En un proyecto nuevo ya sea en QGIS o R cargue la capa temperatura_2.tif. Usando las herramientas necesarias genere una capa como la que se muestra en la imagen.**
+
+![](images/reclass.png){fig-align="center" width="90%"}
+
+::: {.column width="45%"}
+
+```{r}
+#| message: false
+tm_shape(at_2) +
+  tm_raster(
+    palette = "-RdYlBu", 
+    midpoint = 14, 
+    style = "cont"
+  )
+```
+
+:::
+
+::: {.column width="52%"}
+
+```{r}
+#| message: false
+at_levs <- cut(
+  at_2, breaks = c(-Inf, -1, 5, 15, 22, 25, 50)
+)
+tm_shape(at_levs) +
+  tm_raster(palette = "viridis", midpoint = 3)
+```
+
+:::
+
+
+-----------------------------------------------------------------------
+
+
+## Actividad 7. Álgebra de mapas 2
+
+
+**Usando los recortes de Landsat 8 (clip_RT_LC08_L1TP_010063*), calcule el NDVI para toda la zona de estudio. El NDVI se calcula mendiante la ecuación:**
+
+
+$$
+NDVI = \frac{NIR - Red}{NIR + Red}
+$$
+
+
+::: {.column width="48%"}
+
+Importamos los datos y necesitamos las bandas 5 y 4
+
+```{r}
+lc_f <- list.files(
+  "data/tif", pattern = "clip_RT", 
+  full.names = T
+)
+```
+
+Cálculo de NDVI
+
+```{r}
+ndvi_fun <- function(nir, red) {
+  (nir - red) / (nir + red)
+}
+
+ndvi <- ndvi_fun(
+  nir = raster(lc_f[4]), red = raster(lc_f[3])
+)
+```
+
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+qtm(ndvi)
+```
+
+:::
+
+
+
+

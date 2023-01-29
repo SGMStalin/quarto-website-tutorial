@@ -31,11 +31,11 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - href: index.qmd
+      - href: Unidad1.qmd
         text: "Unidad 1: Primeros pasos con SIG's"
-      - explore.qmd
-      - learning-more.qmd
-      - transition-from-rmarkdown.qmd
+      - Unidad2.qmd
+      - Unidad3.qmd
+      - Unidad4.qmd
 
 
 format:

@@ -96,7 +96,9 @@ datos |> st_transform(4326) |> st_geometry() |> st_as_text()
 
 Las coordenadas se están representando diferente, esto se a la transformación que se realiza, en el bloque A utilizamos un epsg: 3857 y en el segundo bloque un epsg: 4326.
 
+
 -----
+
 
 ## Actividad 4. Sistema de coordenadas
 
@@ -130,7 +132,9 @@ coordenada en X: `r X`; coordenada en Y: `r Y`
 
 ![Estadio de la Universidad de Cuenca](images/uce_google_satellite_hw.png){alt="Estadio de la Universidad de Cuenca" fig-align="center" width="95%"}
 
+
 ------
+
 
 ## Actividad 5. Codificación de SRC
 

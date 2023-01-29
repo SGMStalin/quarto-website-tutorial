@@ -61,7 +61,9 @@ tmap_mode("view")
 qtm(inamhi_stat, symbols.col = "Estado")
 ```
 
+
 ------------------------------------------------------------------------
+
 
 ## Actividad 2. Filtrado de vectores
 
@@ -109,7 +111,9 @@ nrow(samp_in_dhs)
 st_bbox(samp_in_dhs)
 ```
 
+
 ------------------------------------------------------------------------
+
 
 ## Actividad 3. Estilos y etiquetas de vectores
 
@@ -133,6 +137,10 @@ qtm(dhs, fill = "grey30") +
     col = "in_dhs", palette = c("TRUE" = 'darkblue', "FALSE" = 'grey75'), title = "Conditions?"
   )
 ```
+
+
+------------------------------------------------------------------------
+
 
 # Trabajando con capas Ráster
 
@@ -242,6 +250,9 @@ hist(modis_2010)
 > Respuesta: Se agrupan tanto en valores bajos como en valores altos, dejando una concavidad en los valores medios.
 
 
+------------------------------------------------------------------------
+
+
 ## Actividad 5. Visualización de capas raster
 
 -   Genere un mapa de la capa de temperatura, con un estilo de gradiente de color, cuya escala se muestre azul (más bajos) a rojo (más alto)
@@ -298,6 +309,9 @@ plotRGB(comp432, stretch = "lin")
 plotRGB(comp764, stretch = "lin")
 ```
 
+
+
+------------------------------------------------------------------------
 
 
 # Datos estructurados no espaciales
