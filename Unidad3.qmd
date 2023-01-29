@@ -490,7 +490,7 @@ ndvi <- ndvi_fun(
 ```{r}
 #| message: false
 #| warning: false
-#| include: false
+#| echo: false
 qtm(ndvi)
 ```
 

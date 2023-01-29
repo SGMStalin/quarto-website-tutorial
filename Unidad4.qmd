@@ -1,128 +1,249 @@
 ---
-title: Transition from RMarkdown
+title: "Unidad 4: Interpolación espacial y Geoestadística"
 ---
 
-You may already have workflows in RMarkdown and are interested in transitioning to Quarto. There's no hurry to migrate to Quarto. Keep using Rmarkdown and when you're ready the migration will be fine.
+- Interpolación basada en métodos determinísticos
+  - Vecino más cercano (Voronoi)
+  - Inverse distance weighting (IDW)
 
-Here are some notes as we migrate RMarkdown sites and books.
+- Predicción:
+  - Covariables
+  - Modelos regresivos
+    - Regresión lineal con desface espacial
+    - Regresión ponderada geográficamente
+  - Métodos geoestadísticos
+    - Kriging
 
-*TODO: translating R code chunks*
 
-## Bookdown to Quarto
+## Paquetes utilizados en esta lección
 
-Converting a Bookdown book to Quarto is slightly more involved than converting a website. A book has chapters whose order must be defined, and likely has citations and [cross-refs](https://quarto.org/docs/books/book-crossrefs.html). Still, conversion is not that hard.
+```{r}
+#| warning: false
+#| message: false
+library(sf)
+library(tidyverse)
+library(tmap)
+library(raster)
+library(stars)
+library(gstat)
+library(spgwr)
+library(dismo)
+library(fields)
+library(automap)
+```
 
-We got some practice converting from Bookdown to Quarto by helping Gavin Fay convert his lab's fantastic onboarding documentation, the [Faylab Lab Manual](https://thefaylab.github.io/lab-manual/). Here's the GitHub view [before](https://github.com/thefaylab/lab-manual/tree/4ebe9614d4fcab9d782073057ef6e56e9213c167) and [after](https://github.com/thefaylab/lab-manual/tree/3ce2418ed7bd65936a130a42a7f975f55fb9b734).
 
-Our best first reference material for this was Nick Tierney's [Notes on Changing from Rmarkdown/Bookdown to Quarto](https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/). Nick shares some scripts in that post to automate some changes. In our case, the book was small enough that we made all changes manually. [Quarto documentation](https://quarto.org/) was indispensable.
+## Actividad 1: Interpolación basada en métodos determinísticos
 
-### Experimenting in a low-risk environment
+> Estos ejercicios se realizaron junto con Pablo Tenelanda Y Damián Tuba.
 
-We forked a copy of the Faylab Lab manual to the Openscapes organization, and worked in a branch so we could make changes relatively risk-free. We could always fork a new copy of the original if we "broke" something. (Caution: the default when making a pull request from a fork is to push changes to the original upstream repo, not your fork and it does this without warning if you have write-access to that repo.) With local previews it's easy to test / play with settings to see what they do. We tended to make a change, Preview, then compare the look and functionality of the book to the original. It was helpful to comment out some elements of the configuration file `_output.yml` after their counterparts had been added to the Quarto configuration file `_quarto.yml`, or to confirm they were no longer needed, before making the drastic move of deleting them.
+**Cargue las capas Temperatura_2.tif y recórtela hasta 200 metros más que la extensión de la capa muestreo.gpkg:: Puntos de muestreo. Y a partir de esos datos genere:**
 
-### The conversion
+```{r}
+puntos <- st_read("data/gpkg/muestreo.gpkg", "Puntos de muestreo", quiet = TRUE)
 
-Here are the main steps to convert the Faylab Lab manual from Bookdown to Quarto.
+puntos <- puntos |> 
+  mutate(x = st_coordinates(puntos)[, "X"], y = st_coordinates(puntos)[, "Y"]) |> 
+  as_Spatial()
 
-Create new empty file called `_quarto.yml` and add book metadata there. The screenshots below
+temp2 <- raster("data/tif/Temperatura_2.tif")
+```
 
-Set project type as `book`.
+Creamos el buffer de al rededor de los puntos:
 
-Move metadata out of `index.qmd` and into `_quarto.yml`. Title, author, and publication date were in `index.qmd` with date set using `date: "Last updated:r Sys.Date()"`. Now these are in `_quarto.yml` with date set using `date: last-modified`. Note that having R code would require you to adjust code chunk options in the Quarto style (`#|`). This tripped us up a bit; see [GitHub Actions](#github-actions).
+```{r}
+mascara <- st_bbox(puntos) |> 
+  st_as_sfc(crs = st_crs(puntos)) |> #convertir el bbox a polígono
+  st_buffer(200) |>  # Crear un buffer de 200 m alrededor del bbox
+  as_Spatial() 
+```
 
-Move chapters listing out of `_bookdown.yml` and into `_quarto.yml`.
+Recortamos la capa de temperatura con los límites de los puntos de muestreo:
 
-Add page footer to `_quarto.yml`.
+::: {.column width="48%"}
 
-Here's what ours looked like when we finished the steps above ([`_quarto.yml`](https://github.com/thefaylab/lab-manual/blob/main/_quarto.yml)).
+```{r}
+template <- temp2 %>% 
+  crop(mascara) %>% 
+  as("SpatialPixelsDataFrame")
+```
 
-::: {layout-ncol="2"}
-![\_quarto.yml contents](images/faylab-manual-quarto-yml.png){fig-alt="_quarto.yml file contents" width=45%}
+Revisamos el resultado
 
-![Faylab Lab Manual](images/faylab-manual.png){fig-alt="screenshot of Lab Manual book" width=45%}
+```{r}
+#| eval: false
+template |> plot()
+puntos |> plot(add = T)
+```
+
 :::
 
-Change insertion of images from html style to Quarto style. (Note Quarto calls them "figures", not "images".) The following snippet will insert the GitHub octocat logo in a page:
+::: {.column width="48%"}
 
-``` bash
-![](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png){fig-align="left" width="35px"}
+```{r}
+#| echo: false
+template |> plot()
+puntos |> plot(add = T)
 ```
 
-Change all filename extensions `.Rmd` -\> `.qmd` (you could Preview after this change and see that the book looks the same). Note that Quarto works with `.Rmd` files just as well as it does `.qmd`, so this change is not urgent. In fact, if you have a lot of R code in your .Rmds (unlike the Faylab Lab Manual), there will be additional tinkering needed to make the code chunks happy.
-
-
-### Citations
-
-The Faylab Lab Manual cited two papers, presenting us with an opportunity to see how easy it is to add references to a Quarto book. Briefly, in the Visual Editor, Insert \> Citation \> DOI. Pasting the DOI or its full URL, we can insert the citation. This automatically creates a `references.bib` file and adds the full citations at the bottom of the chapter page ([watch demo](https://youtu.be/azVAl343CIU?t=2923)). In July 2022, we had to manually add a `## References` heading, but this may not be necessary in future Quarto updates.
-
-::: {layout-ncol="2"}
-![Insert citation via its DOI using RStudio Visual Editor](images/rstudio-insert-citation.png){fig-alt="RStudio Visual Editor Insert dropdown menu with Citation highlighted"}
-
-![](images/rstudio-insert-citation-doi.png)
 :::
 
-### Publishing notes
 
-If the book's output is strictly html, there's no need to specify `output-dir` in `_quarto.yml`. The output directory default is `_book/`, which is what we'd like. If we wanted other types of output like like PDF or EPUB, etc. those single file outputs are also written to the output-dir ([Quarto docs](https://quarto.org/docs/books/book-output.html#output-path)).
+- Modelo de tendencia espacial de los datos mediante un polinomio de segundo orden (modelo cuadrático). Puede usar la fórmula: variable ~ x + y + I(x*y) + I(x^2) + I(y^2)
 
-If you currently have a `docs/` folder, delete it.
-
-Update [`.gitignore`](https://github.com/thefaylab/lab-manual/blob/main/.gitignore) to ignore `_book/`. At the same time, we have it ignore caches and a .quarto file:
-
-``` bash
-/.quarto/
-*_cache/
-_book/
+```{r}
+spatial_model <- krige(
+  ta_media ~ x + y + I(x*y)+ I(x^2)+I(y^2), puntos, template
+)
+spplot(spatial_model ,"var1.pred",
+       main= "Tendencia (2do orden)")
 ```
 
-Once all is settled, delete `_output.yml`.
+- Diagrama de Voronoi.
 
-Once the Openscapes fork was fully reviewed, we made a pull request from that to the main branch of the book's repo. Once that was merged, we set up GitHub Actions to render the book. (TODO: instructions for GitHub Actions)
+A continuación se presenta los diagramas de voronoi con el paquete dismo y con una interpolación de kriging simple.
 
-### GitHub Actions {#github-actions}
+```{r}
+#| layout-ncol: 2
+dismo::voronoi(coordinates(puntos)) %>% 
+  plot(main = "Polígonos de Voronoi")
 
-This book was mostly prose and screenshots without any R code. This made the conversion from RMarkdown to Quarto likely more straightforward than if you also needed to adjust code chunk options in the quarto style (#|). Our initial GitHub Action to render the converted Faylab Lab Manual failed because we had a piece of R code - even though the code was commented out! This was resolved when we deleted the line. 
-
-## Distill to quarto
-
-We transitioned our [events site](https://openscapes.org/events) from distill to quarto in May 2022 (github view [before](https://github.com/Openscapes/events/tree/13f95f507629eba5e6ed721d1902258dcbc421e6) and [after](https://github.com/Openscapes/events/tree/237acd5144d810cb5465cc5616ee453f2e261fbc)). We followed excellent notes and examples from [Nick Tierney](https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/) and [Danielle Navarro](https://blog.djnavarro.net/posts/2022-04-20_porting-to-quarto/).
-
-After we had changed all the files, the Build tab in the RStudio IDE still showed "Build website" rather then "Render Website" and "Preview Website", and would error when we pushed them (because that button was expecting a distill site, not a quarto site). To fix this, we updated the `.Rproj` file. Clicking on the `.Rproj` file in the RStudio IDE will open a dialog box where you can click things you want (you can also open these in a text editor or from the GitHub website to see the actual text). To fix this situation with the Build tab: Project Options \> Build Tools \> Project Build Tools \> **None**.
-
-Looking at files [`/posts/_metadata.yml`](https://github.com/Openscapes/events/blob/main/posts/_metadata.yml) and [`_quarto.yml`](https://github.com/Openscapes/events/blob/main/_quarto.yml) helps see where things are defined. For example, to make event post citations appear, we added `citation: true` to [`/posts/_metadata.yml`](https://github.com/Openscapes/events/blob/main/posts/_metadata.yml) and in [`_quarto.yml`](https://github.com/Openscapes/events/blob/main/_quarto.yml) under the `website` key we set `site-url: https://openscapes.github.io/events`. We deleted `footer.html` used with distill because footer is now defined in `quarto.yml`.
-
-### Publishing notes
-
-> **Background**: Our distill site had been set up to output to a `docs` folder, and had GitHub Settings \> Pages set to look there rather `gh-pages` branch. (Julie note: this was a new-to-me capability when we set up the events distill site in Spring 2021 so I had forgotten that was an option). We've inititally kept this same set-up for now with our events page in `_quarto.yml`: [`output-dir: docs`](https://github.com/Openscapes/events/blob/237acd5144d810cb5465cc5616ee453f2e261fbc/_quarto.yml#L3). However, this is sub-optimal; better to not have to commit and push these files but to instead have a GitHub Action generate them upon a commit. So the following is what we did -
-
-**Don't specify `output-dir` in `_quarto.yml`**. The output directory default is `_site/`, which is what we'd like.
-
-If you currently have a `docs/` folder (like we did as we were experimenting), delete it.
-
-**Update `.gitignore` to ignore `_site/`**. At the same time, we have it ignore caches and a .quarto file:
-
-``` bash
-/.quarto/
-*_cache/
-_site/
+krige(ta_media ~ 1, puntos, template, nmax=1, set=list(idp = 0), debug.level = 0) |>
+  spplot("var1.pred", main= "1 vecino próximo")
 ```
 
-**Push these changes, merge into main.**
+- Interpolación ponderada por el inverso de la distancia
 
-**On GitHub.com, in your repo, set up GitHub publishing**
+```{r}
+idw(
+  ta_media ~ 1, puntos, template, nmax = 5, idp = 2, debug.level = 0
+) |> spplot("var1.pred", main= "Inverse Distance Weighting")
+```
 
-Follow instructions from the [explore and setup chapter](https://openscapes.github.io/quarto-website-tutorial/explore.html#set-up-github-publishing).
 
-## Troubleshooting
+- Interpolación Thin Plate
 
-### GitHub Action fails, says you need RMarkdown but you don't have R code!
+Con la función **Tps** y las coordenadas de la capa puntos como la matriz de variable independientes se crea el modelo, que luego es ingresado junto al raster **template** en la función **interpolate**.
 
-And you changed all .Rmds to .qmds!
+```{r}
 
-You likely have a few `setup` code chunks from RMarkdown, that look like this:
+tps_model <- fields::Tps(coordinates(puntos), puntos$ta_media)
+tps_grid <- interpolate(raster(template), tps_model)
+spplot(tps_grid, main = "Thin plate spline")
+```
 
-`{r setup, include=FALSE}`
 
-`knitr::opts_chunk$set(echo = FALSE)`
+-----------------------------------------------------------------------
 
-You can find them by opening each of your files and having a look, or use GitHub's search for the keyword `knitr`
+## Actividad 2: Predicción Modelos regresivos
+
+**Cargue las capas modis_perc_bosque_2010_clip.tif y dem200s.tif. Recórtelas tal como lo hizo con la capa de temperatura.**
+
+- Ajuste un modelo de regresión geográficamente ponderada (GWR) con las variables "ta_media" como dependiente y "Altitud" + "Forest_P_2010" como independientes
+
+
+- Describa el resultado.
+
+
+- Genere las capas de valores beta.
+
+
+- Mediante álgebra de mapas genere la predicción para la variable de temperatura, usando las capas beta y las variables independientes .
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+## Actividad 3. Predicción Geoestadística
+
+- A partir de los mismos datos de muestreo genere el semivariograma experimental.
+
+```{r}
+v <- variogram(ta_media ~ 1, locations = puntos)
+plot(v)
+```
+
+
+- Ajuste un modelo teórico que más considere pertinente al semivariograma, y justifique por qué utilizó ese Modelo teórico.
+
+Para ajustar el modelo vamos a revisar los disponibles
+
+```{r}
+gstat::show.vgms()
+```
+
+Entre los que mejor se ajustan al semivariograma experimental están "Sph", "Cir" y "Pen"
+
+```{r}
+#| layout-ncol: 3
+plot(v, model = fit.variogram(v, model = vgm(model = "Sph")))
+plot(v, model = fit.variogram(v, model = vgm(model = "Cir")))
+plot(v, model = fit.variogram(v, model = vgm(model = "Pen")))
+```
+
+El mejor modelo de variograma que se ajusta, tanto para distancias cortas como para distancias largas, es el modelo "Pen"
+
+```{r}
+fit.v <- fit.variogram(v, model = vgm(model = "Pen"))
+plot(v, model = fit.v)
+```
+
+- Genere los resultados de predicción con los tres tipos de Krigin (Va a necesitar ajustar un semivariograma adicional)
+
+> Kriging simple
+
+```{r}
+simple_krige <- krige(ta_media ~ 1, puntos, template, model = fit.v, 
+            beta = mean(puntos$ta_media))
+```
+
+> Kriging Ordinario
+
+```{r}
+ordinary_krige <- krige(ta_media ~ 1, locations = puntos, newdata = template,
+            model = fit.v)
+```
+
+> Kriging Universal
+
+```{r}
+universal_krige <- krige(ta_media ~ x + y, puntos, template, 
+            model = automap::autofitVariogram(ta_media ~ x + y, puntos)$var_model, 
+            block = c(100, 100))
+```
+
+
+
+```{r}
+#| layout-ncol: 3
+spplot(simple_krige, "var1.pred", main = "Simple")
+spplot(ordinary_krige, "var1.pred", main = "Ordinario")
+spplot(universal_krige, "var1.pred", main = "Universal")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
