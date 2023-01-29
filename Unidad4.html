@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Solutions of R-Spatial course activities MEH-IIIC - Transition from RMarkdown</title>
+<title>Solutions of R-Spatial course activities MEH-IIIC - Unidad 4: Interpolación espacial y Geoestadística</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Transition from RMarkdown</h1>
+      <h1 class="quarto-secondary-nav-title">Unidad 4: Interpolación espacial y Geoestadística</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -179,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Unidad4.html" class="sidebar-item-text sidebar-link active">Transition from RMarkdown</a>
+  <a href="./Unidad4.html" class="sidebar-item-text sidebar-link active">Unidad 4: Interpolación espacial y Geoestadística</a>
   </div>
 </li>
     </ul>
@@ -191,22 +191,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bookdown-to-quarto" id="toc-bookdown-to-quarto" class="nav-link active" data-scroll-target="#bookdown-to-quarto">Bookdown to Quarto</a>
-  <ul class="collapse">
-  <li><a href="#experimenting-in-a-low-risk-environment" id="toc-experimenting-in-a-low-risk-environment" class="nav-link" data-scroll-target="#experimenting-in-a-low-risk-environment">Experimenting in a low-risk environment</a></li>
-  <li><a href="#the-conversion" id="toc-the-conversion" class="nav-link" data-scroll-target="#the-conversion">The conversion</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations">Citations</a></li>
-  <li><a href="#publishing-notes" id="toc-publishing-notes" class="nav-link" data-scroll-target="#publishing-notes">Publishing notes</a></li>
-  <li><a href="#github-actions" id="toc-github-actions" class="nav-link" data-scroll-target="#github-actions">GitHub Actions</a></li>
-  </ul></li>
-  <li><a href="#distill-to-quarto" id="toc-distill-to-quarto" class="nav-link" data-scroll-target="#distill-to-quarto">Distill to quarto</a>
-  <ul class="collapse">
-  <li><a href="#publishing-notes-1" id="toc-publishing-notes-1" class="nav-link" data-scroll-target="#publishing-notes-1">Publishing notes</a></li>
-  </ul></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
-  <ul class="collapse">
-  <li><a href="#github-action-fails-says-you-need-rmarkdown-but-you-dont-have-r-code" id="toc-github-action-fails-says-you-need-rmarkdown-but-you-dont-have-r-code" class="nav-link" data-scroll-target="#github-action-fails-says-you-need-rmarkdown-but-you-dont-have-r-code">GitHub Action fails, says you need RMarkdown but you don’t have R code!</a></li>
-  </ul></li>
+  <li><a href="#paquetes-utilizados-en-esta-lección" id="toc-paquetes-utilizados-en-esta-lección" class="nav-link active" data-scroll-target="#paquetes-utilizados-en-esta-lección">Paquetes utilizados en esta lección</a></li>
+  <li><a href="#actividad-1-interpolación-basada-en-métodos-determinísticos" id="toc-actividad-1-interpolación-basada-en-métodos-determinísticos" class="nav-link" data-scroll-target="#actividad-1-interpolación-basada-en-métodos-determinísticos">Actividad 1: Interpolación basada en métodos determinísticos</a></li>
+  <li><a href="#actividad-2-predicción-modelos-regresivos" id="toc-actividad-2-predicción-modelos-regresivos" class="nav-link" data-scroll-target="#actividad-2-predicción-modelos-regresivos">Actividad 2: Predicción Modelos regresivos</a></li>
+  <li><a href="#actividad-3.-predicción-geoestadística" id="toc-actividad-3.-predicción-geoestadística" class="nav-link" data-scroll-target="#actividad-3.-predicción-geoestadística">Actividad 3. Predicción Geoestadística</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/SGMStalin/r-spatial_activities/edit/main/Unidad4.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/SGMStalin/r-spatial_activities/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -215,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Transition from RMarkdown</h1>
+<h1 class="title d-none d-lg-block">Unidad 4: Interpolación espacial y Geoestadística</h1>
 </div>
 
 
@@ -230,119 +218,261 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>You may already have workflows in RMarkdown and are interested in transitioning to Quarto. There’s no hurry to migrate to Quarto. Keep using Rmarkdown and when you’re ready the migration will be fine.</p>
-<p>Here are some notes as we migrate RMarkdown sites and books.</p>
-<p><em>TODO: translating R code chunks</em></p>
-<section id="bookdown-to-quarto" class="level2">
-<h2 class="anchored" data-anchor-id="bookdown-to-quarto">Bookdown to Quarto</h2>
-<p>Converting a Bookdown book to Quarto is slightly more involved than converting a website. A book has chapters whose order must be defined, and likely has citations and <a href="https://quarto.org/docs/books/book-crossrefs.html">cross-refs</a>. Still, conversion is not that hard.</p>
-<p>We got some practice converting from Bookdown to Quarto by helping Gavin Fay convert his lab’s fantastic onboarding documentation, the <a href="https://thefaylab.github.io/lab-manual/">Faylab Lab Manual</a>. Here’s the GitHub view <a href="https://github.com/thefaylab/lab-manual/tree/4ebe9614d4fcab9d782073057ef6e56e9213c167">before</a> and <a href="https://github.com/thefaylab/lab-manual/tree/3ce2418ed7bd65936a130a42a7f975f55fb9b734">after</a>.</p>
-<p>Our best first reference material for this was Nick Tierney’s <a href="https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/">Notes on Changing from Rmarkdown/Bookdown to Quarto</a>. Nick shares some scripts in that post to automate some changes. In our case, the book was small enough that we made all changes manually. <a href="https://quarto.org/">Quarto documentation</a> was indispensable.</p>
-<section id="experimenting-in-a-low-risk-environment" class="level3">
-<h3 class="anchored" data-anchor-id="experimenting-in-a-low-risk-environment">Experimenting in a low-risk environment</h3>
-<p>We forked a copy of the Faylab Lab manual to the Openscapes organization, and worked in a branch so we could make changes relatively risk-free. We could always fork a new copy of the original if we “broke” something. (Caution: the default when making a pull request from a fork is to push changes to the original upstream repo, not your fork and it does this without warning if you have write-access to that repo.) With local previews it’s easy to test / play with settings to see what they do. We tended to make a change, Preview, then compare the look and functionality of the book to the original. It was helpful to comment out some elements of the configuration file <code>_output.yml</code> after their counterparts had been added to the Quarto configuration file <code>_quarto.yml</code>, or to confirm they were no longer needed, before making the drastic move of deleting them.</p>
-</section>
-<section id="the-conversion" class="level3">
-<h3 class="anchored" data-anchor-id="the-conversion">The conversion</h3>
-<p>Here are the main steps to convert the Faylab Lab manual from Bookdown to Quarto.</p>
-<p>Create new empty file called <code>_quarto.yml</code> and add book metadata there. The screenshots below</p>
-<p>Set project type as <code>book</code>.</p>
-<p>Move metadata out of <code>index.qmd</code> and into <code>_quarto.yml</code>. Title, author, and publication date were in <code>index.qmd</code> with date set using <code>date: "Last updated:r Sys.Date()"</code>. Now these are in <code>_quarto.yml</code> with date set using <code>date: last-modified</code>. Note that having R code would require you to adjust code chunk options in the Quarto style (<code>#|</code>). This tripped us up a bit; see <a href="#github-actions">GitHub Actions</a>.</p>
-<p>Move chapters listing out of <code>_bookdown.yml</code> and into <code>_quarto.yml</code>.</p>
-<p>Add page footer to <code>_quarto.yml</code>.</p>
-<p>Here’s what ours looked like when we finished the steps above (<a href="https://github.com/thefaylab/lab-manual/blob/main/_quarto.yml"><code>_quarto.yml</code></a>).</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/faylab-manual-quarto-yml.png" class="img-fluid figure-img" alt="_quarto.yml file contents"></p>
-<p></p><figcaption class="figure-caption">_quarto.yml contents</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/faylab-manual.png" class="img-fluid figure-img" alt="screenshot of Lab Manual book"></p>
-<p></p><figcaption class="figure-caption">Faylab Lab Manual</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>Change insertion of images from html style to Quarto style. (Note Quarto calls them “figures”, not “images”.) The following snippet will insert the GitHub octocat logo in a page:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">![]</span><span class="er">(</span><span class="ex">https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png</span><span class="kw">)</span><span class="ex">{fig-align=</span><span class="st">"left"</span> width=<span class="st">"35px"</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Change all filename extensions <code>.Rmd</code> -&gt; <code>.qmd</code> (you could Preview after this change and see that the book looks the same). Note that Quarto works with <code>.Rmd</code> files just as well as it does <code>.qmd</code>, so this change is not urgent. In fact, if you have a lot of R code in your .Rmds (unlike the Faylab Lab Manual), there will be additional tinkering needed to make the code chunks happy.</p>
-</section>
-<section id="citations" class="level3">
-<h3 class="anchored" data-anchor-id="citations">Citations</h3>
-<p>The Faylab Lab Manual cited two papers, presenting us with an opportunity to see how easy it is to add references to a Quarto book. Briefly, in the Visual Editor, Insert &gt; Citation &gt; DOI. Pasting the DOI or its full URL, we can insert the citation. This automatically creates a <code>references.bib</code> file and adds the full citations at the bottom of the chapter page (<a href="https://youtu.be/azVAl343CIU?t=2923">watch demo</a>). In July 2022, we had to manually add a <code>## References</code> heading, but this may not be necessary in future Quarto updates.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/rstudio-insert-citation.png" class="img-fluid figure-img" alt="RStudio Visual Editor Insert dropdown menu with Citation highlighted"></p>
-<p></p><figcaption class="figure-caption">Insert citation via its DOI using RStudio Visual Editor</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/rstudio-insert-citation-doi.png" class="img-fluid"></p>
-</div>
-</div>
+<ul>
+<li>Interpolación basada en métodos determinísticos
+<ul>
+<li>Vecino más cercano (Voronoi)</li>
+<li>Inverse distance weighting (IDW)</li>
+</ul></li>
+<li>Predicción:
+<ul>
+<li>Covariables</li>
+<li>Modelos regresivos
+<ul>
+<li>Regresión lineal con desface espacial</li>
+<li>Regresión ponderada geográficamente</li>
+</ul></li>
+<li>Métodos geoestadísticos
+<ul>
+<li>Kriging</li>
+</ul></li>
+</ul></li>
+</ul>
+<section id="paquetes-utilizados-en-esta-lección" class="level2">
+<h2 class="anchored" data-anchor-id="paquetes-utilizados-en-esta-lección">Paquetes utilizados en esta lección</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spgwr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dismo)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fields)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(automap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="publishing-notes" class="level3">
-<h3 class="anchored" data-anchor-id="publishing-notes">Publishing notes</h3>
-<p>If the book’s output is strictly html, there’s no need to specify <code>output-dir</code> in <code>_quarto.yml</code>. The output directory default is <code>_book/</code>, which is what we’d like. If we wanted other types of output like like PDF or EPUB, etc. those single file outputs are also written to the output-dir (<a href="https://quarto.org/docs/books/book-output.html#output-path">Quarto docs</a>).</p>
-<p>If you currently have a <code>docs/</code> folder, delete it.</p>
-<p>Update <a href="https://github.com/thefaylab/lab-manual/blob/main/.gitignore"><code>.gitignore</code></a> to ignore <code>_book/</code>. At the same time, we have it ignore caches and a .quarto file:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/.quarto/</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*_cache/</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">_book/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once all is settled, delete <code>_output.yml</code>.</p>
-<p>Once the Openscapes fork was fully reviewed, we made a pull request from that to the main branch of the book’s repo. Once that was merged, we set up GitHub Actions to render the book. (TODO: instructions for GitHub Actions)</p>
-</section>
-<section id="github-actions" class="level3">
-<h3 class="anchored" data-anchor-id="github-actions">GitHub Actions</h3>
-<p>This book was mostly prose and screenshots without any R code. This made the conversion from RMarkdown to Quarto likely more straightforward than if you also needed to adjust code chunk options in the quarto style (#|). Our initial GitHub Action to render the converted Faylab Lab Manual failed because we had a piece of R code - even though the code was commented out! This was resolved when we deleted the line.</p>
-</section>
-</section>
-<section id="distill-to-quarto" class="level2">
-<h2 class="anchored" data-anchor-id="distill-to-quarto">Distill to quarto</h2>
-<p>We transitioned our <a href="https://openscapes.org/events">events site</a> from distill to quarto in May 2022 (github view <a href="https://github.com/Openscapes/events/tree/13f95f507629eba5e6ed721d1902258dcbc421e6">before</a> and <a href="https://github.com/Openscapes/events/tree/237acd5144d810cb5465cc5616ee453f2e261fbc">after</a>). We followed excellent notes and examples from <a href="https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/">Nick Tierney</a> and <a href="https://blog.djnavarro.net/posts/2022-04-20_porting-to-quarto/">Danielle Navarro</a>.</p>
-<p>After we had changed all the files, the Build tab in the RStudio IDE still showed “Build website” rather then “Render Website” and “Preview Website”, and would error when we pushed them (because that button was expecting a distill site, not a quarto site). To fix this, we updated the <code>.Rproj</code> file. Clicking on the <code>.Rproj</code> file in the RStudio IDE will open a dialog box where you can click things you want (you can also open these in a text editor or from the GitHub website to see the actual text). To fix this situation with the Build tab: Project Options &gt; Build Tools &gt; Project Build Tools &gt; <strong>None</strong>.</p>
-<p>Looking at files <a href="https://github.com/Openscapes/events/blob/main/posts/_metadata.yml"><code>/posts/_metadata.yml</code></a> and <a href="https://github.com/Openscapes/events/blob/main/_quarto.yml"><code>_quarto.yml</code></a> helps see where things are defined. For example, to make event post citations appear, we added <code>citation: true</code> to <a href="https://github.com/Openscapes/events/blob/main/posts/_metadata.yml"><code>/posts/_metadata.yml</code></a> and in <a href="https://github.com/Openscapes/events/blob/main/_quarto.yml"><code>_quarto.yml</code></a> under the <code>website</code> key we set <code>site-url: https://openscapes.github.io/events</code>. We deleted <code>footer.html</code> used with distill because footer is now defined in <code>quarto.yml</code>.</p>
-<section id="publishing-notes-1" class="level3">
-<h3 class="anchored" data-anchor-id="publishing-notes-1">Publishing notes</h3>
+<section id="actividad-1-interpolación-basada-en-métodos-determinísticos" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-1-interpolación-basada-en-métodos-determinísticos">Actividad 1: Interpolación basada en métodos determinísticos</h2>
 <blockquote class="blockquote">
-<p><strong>Background</strong>: Our distill site had been set up to output to a <code>docs</code> folder, and had GitHub Settings &gt; Pages set to look there rather <code>gh-pages</code> branch. (Julie note: this was a new-to-me capability when we set up the events distill site in Spring 2021 so I had forgotten that was an option). We’ve inititally kept this same set-up for now with our events page in <code>_quarto.yml</code>: <a href="https://github.com/Openscapes/events/blob/237acd5144d810cb5465cc5616ee453f2e261fbc/_quarto.yml#L3"><code>output-dir: docs</code></a>. However, this is sub-optimal; better to not have to commit and push these files but to instead have a GitHub Action generate them upon a commit. So the following is what we did -</p>
+<p>Estos ejercicios se realizaron junto con Pablo Tenelanda Y Damián Tuba.</p>
 </blockquote>
-<p><strong>Don’t specify <code>output-dir</code> in <code>_quarto.yml</code></strong>. The output directory default is <code>_site/</code>, which is what we’d like.</p>
-<p>If you currently have a <code>docs/</code> folder (like we did as we were experimenting), delete it.</p>
-<p><strong>Update <code>.gitignore</code> to ignore <code>_site/</code></strong>. At the same time, we have it ignore caches and a .quarto file:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/.quarto/</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*_cache/</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">_site/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Push these changes, merge into main.</strong></p>
-<p><strong>On GitHub.com, in your repo, set up GitHub publishing</strong></p>
-<p>Follow instructions from the <a href="https://openscapes.github.io/quarto-website-tutorial/explore.html#set-up-github-publishing">explore and setup chapter</a>.</p>
+<p><strong>Cargue las capas Temperatura_2.tif y recórtela hasta 200 metros más que la extensión de la capa muestreo.gpkg:: Puntos de muestreo. Y a partir de esos datos genere:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>puntos <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/gpkg/muestreo.gpkg"</span>, <span class="st">"Puntos de muestreo"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>puntos <span class="ot">&lt;-</span> puntos <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">st_coordinates</span>(puntos)[, <span class="st">"X"</span>], <span class="at">y =</span> <span class="fu">st_coordinates</span>(puntos)[, <span class="st">"Y"</span>]) <span class="sc">|&gt;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_Spatial</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>temp2 <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"data/tif/Temperatura_2.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Creamos el buffer de al rededor de los puntos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mascara <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(puntos) <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sfc</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(puntos)) <span class="sc">|&gt;</span> <span class="co">#convertir el bbox a polígono</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span>  <span class="co"># Crear un buffer de 200 m alrededor del bbox</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_Spatial</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Recortamos la capa de temperatura con los límites de los puntos de muestreo:</p>
+<div class="column" style="width:48%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>template <span class="ot">&lt;-</span> temp2 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">crop</span>(mascara) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as</span>(<span class="st">"SpatialPixelsDataFrame"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Revisamos el resultado</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>template <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>puntos <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">add =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="column" style="width:48%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Modelo de tendencia espacial de los datos mediante un polinomio de segundo orden (modelo cuadrático). Puede usar la fórmula: variable ~ x + y + I(x*y) + I(x^2) + I(y^2)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>spatial_model <span class="ot">&lt;-</span> <span class="fu">krige</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  ta_media <span class="sc">~</span> x <span class="sc">+</span> y <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">*</span>y)<span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">I</span>(y<span class="sc">^</span><span class="dv">2</span>), puntos, template</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[ordinary or weighted least squares prediction]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(spatial_model ,<span class="st">"var1.pred"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">main=</span> <span class="st">"Tendencia (2do orden)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Diagrama de Voronoi.</li>
+</ul>
+<p>A continuación se presenta los diagramas de voronoi con el paquete dismo y con una interpolación de kriging simple.</p>
+<div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dismo<span class="sc">::</span><span class="fu">voronoi</span>(<span class="fu">coordinates</span>(puntos)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">main =</span> <span class="st">"Polígonos de Voronoi"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required namespace: deldir</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, puntos, template, <span class="at">nmax=</span><span class="dv">1</span>, <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>), <span class="at">debug.level =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spplot</span>(<span class="st">"var1.pred"</span>, <span class="at">main=</span> <span class="st">"1 vecino próximo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Interpolación ponderada por el inverso de la distancia</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">idw</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  ta_media <span class="sc">~</span> <span class="dv">1</span>, puntos, template, <span class="at">nmax =</span> <span class="dv">5</span>, <span class="at">idp =</span> <span class="dv">2</span>, <span class="at">debug.level =</span> <span class="dv">0</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">spplot</span>(<span class="st">"var1.pred"</span>, <span class="at">main=</span> <span class="st">"Inverse Distance Weighting"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Interpolación Thin Plate</li>
+</ul>
+<p>Con la función <strong>Tps</strong> y las coordenadas de la capa puntos como la matriz de variable independientes se crea el modelo, que luego es ingresado junto al raster <strong>template</strong> en la función <strong>interpolate</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tps_model <span class="ot">&lt;-</span> fields<span class="sc">::</span><span class="fu">Tps</span>(<span class="fu">coordinates</span>(puntos), puntos<span class="sc">$</span>ta_media)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tps_grid <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(<span class="fu">raster</span>(template), tps_model)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(tps_grid, <span class="at">main =</span> <span class="st">"Thin plate spline"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
 </section>
+<section id="actividad-2-predicción-modelos-regresivos" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-2-predicción-modelos-regresivos">Actividad 2: Predicción Modelos regresivos</h2>
+<p><strong>Cargue las capas modis_perc_bosque_2010_clip.tif y dem200s.tif. Recórtelas tal como lo hizo con la capa de temperatura.</strong></p>
+<ul>
+<li><p>Ajuste un modelo de regresión geográficamente ponderada (GWR) con las variables “ta_media” como dependiente y “Altitud” + “Forest_P_2010” como independientes</p></li>
+<li><p>Describa el resultado.</p></li>
+<li><p>Genere las capas de valores beta.</p></li>
+<li><p>Mediante álgebra de mapas genere la predicción para la variable de temperatura, usando las capas beta y las variables independientes .</p></li>
+</ul>
+<hr>
 </section>
-<section id="troubleshooting" class="level2">
-<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
-<section id="github-action-fails-says-you-need-rmarkdown-but-you-dont-have-r-code" class="level3">
-<h3 class="anchored" data-anchor-id="github-action-fails-says-you-need-rmarkdown-but-you-dont-have-r-code">GitHub Action fails, says you need RMarkdown but you don’t have R code!</h3>
-<p>And you changed all .Rmds to .qmds!</p>
-<p>You likely have a few <code>setup</code> code chunks from RMarkdown, that look like this:</p>
-<p><code>{r setup, include=FALSE}</code></p>
-<p><code>knitr::opts_chunk$set(echo = FALSE)</code></p>
-<p>You can find them by opening each of your files and having a look, or use GitHub’s search for the keyword <code>knitr</code></p>
+<section id="actividad-3.-predicción-geoestadística" class="level2">
+<h2 class="anchored" data-anchor-id="actividad-3.-predicción-geoestadística">Actividad 3. Predicción Geoestadística</h2>
+<ul>
+<li>A partir de los mismos datos de muestreo genere el semivariograma experimental.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">variogram</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, <span class="at">locations =</span> puntos)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Ajuste un modelo teórico que más considere pertinente al semivariograma, y justifique por qué utilizó ese Modelo teórico.</li>
+</ul>
+<p>Para ajustar el modelo vamos a revisar los disponibles</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gstat<span class="sc">::</span><span class="fu">show.vgms</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Entre los que mejor se ajustan al semivariograma experimental están “Sph”, “Cir” y “Pen”</p>
+<div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Sph"</span>)))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Cir"</span>)))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Pen"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+<p>El mejor modelo de variograma que se ajusta, tanto para distancias cortas como para distancias largas, es el modelo “Pen”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit.v <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Pen"</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> fit.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Genere los resultados de predicción con los tres tipos de Krigin (Va a necesitar ajustar un semivariograma adicional)</li>
+</ul>
+<blockquote class="blockquote">
+<p>Kriging simple</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>simple_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, puntos, template, <span class="at">model =</span> fit.v, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">beta =</span> <span class="fu">mean</span>(puntos<span class="sc">$</span>ta_media))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[using simple kriging]</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Kriging Ordinario</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ordinary_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, <span class="at">locations =</span> puntos, <span class="at">newdata =</span> template,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> fit.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[using ordinary kriging]</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Kriging Universal</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>universal_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> x <span class="sc">+</span> y, puntos, template, </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> automap<span class="sc">::</span><span class="fu">autofitVariogram</span>(ta_media <span class="sc">~</span> x <span class="sc">+</span> y, puntos)<span class="sc">$</span>var_model, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">block =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[using universal kriging]</code></pre>
+</div>
+</div>
+<div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(simple_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Simple"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(ordinary_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Ordinario"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(universal_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Universal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
