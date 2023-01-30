@@ -363,11 +363,98 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="actividad-2-predicción-modelos-regresivos">Actividad 2: Predicción Modelos regresivos</h2>
 <p><strong>Cargue las capas modis_perc_bosque_2010_clip.tif y dem200s.tif. Recórtelas tal como lo hizo con la capa de temperatura.</strong></p>
 <ul>
-<li><p>Ajuste un modelo de regresión geográficamente ponderada (GWR) con las variables “ta_media” como dependiente y “Altitud” + “Forest_P_2010” como independientes</p></li>
-<li><p>Describa el resultado.</p></li>
-<li><p>Genere las capas de valores beta.</p></li>
-<li><p>Mediante álgebra de mapas genere la predicción para la variable de temperatura, usando las capas beta y las variables independientes .</p></li>
+<li>Ajuste un modelo de regresión geográficamente ponderada (GWR) con las variables “ta_media” como dependiente y “Altitud” + “Forest_P_2010” como independientes</li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>alt <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"data/tif/dem200s.tif"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">crop</span>(mascara) </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Llamar al archivo modis</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>forest2010 <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"data/tif/modis_perc_bosque_2010_clip.tif"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">crop</span>(mascara) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>bwG <span class="ot">&lt;-</span> <span class="fu">gwr.sel</span>(ta_media <span class="sc">~</span> Altitud <span class="sc">+</span> Forest_P_2010,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> puntos,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">gweight =</span> gwr.Gauss,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>bwG</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6705.23</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste del modelo sin predicción</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>gwr.ta <span class="ot">&lt;-</span> <span class="fu">gwr</span>(ta_media <span class="sc">~</span> Altitud <span class="sc">+</span> Forest_P_2010,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> puntos,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">bandwidth =</span> bwG,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">gweight =</span> gwr.Gauss,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">fit.points =</span> template)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>gwr.ta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+gwr(formula = ta_media ~ Altitud + Forest_P_2010, data = puntos, 
+    bandwidth = bwG, gweight = gwr.Gauss, fit.points = template)
+Kernel function: gwr.Gauss 
+Fixed bandwidth: 6705.23 
+Fit points: 448011
+Summary of GWR coefficient estimates at fit points:
+                    Min.    1st Qu.     Median    3rd Qu.    Max.
+X.Intercept.  17.0668097 25.8359513 26.5007542 27.5936272 31.4087
+Altitud       -0.0058225 -0.0048111 -0.0046015 -0.0044479 -0.0028
+Forest_P_2010 -0.0565524 -0.0103784 -0.0001544  0.0091512  0.1131</code></pre>
+</div>
+</div>
+<div class="column" style="width:45%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>template2 <span class="ot">&lt;-</span> <span class="fu">stack</span>(<span class="fu">list</span>(<span class="at">ta_media =</span> <span class="fu">raster</span>(template),</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Altitud =</span> alt,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Forest_P_2010 =</span> forest2010)) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mask</span>(alt) <span class="sc">|&gt;</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as</span>(<span class="st">"SpatialPixelsDataFrame"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>gwr.ta2 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(ta_media <span class="sc">~</span> Altitud <span class="sc">+</span> Forest_P_2010,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> puntos,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">bandwidth =</span> bwG,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">gweight =</span> gwr.Gauss,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">fit.points =</span> template2,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">predictions =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(gwr.ta2<span class="sc">$</span>SDF, <span class="st">"pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Describa el resultado.</li>
+</ul>
+<blockquote class="blockquote">
+<p>El modelo GWR, es una de las tecnicas de regresión espacial empleado ampliamente en geografia y en otras areas. El cual mediante una ecuación de regresión evalua las variables que influyen en el proceso que se intenta comprender o precedir. Obteniendo como resultado los coeficientes de correlación entre el proceso a comprender o predecir y cada variable evaluada. Por lo tanto, considerando a la variable temperatura como dependiente de la altitud y Forest 2010. Se obtuvo que la altitud presenta coeficeintes negativos (-0.005: -0.003), mientras que la cobertura de bosque, presenta coeficientes entre -0.001 a 0.1. En ambos casos, su influencia es baja con respecto a la temperatura.</p>
+</blockquote>
+<ul>
+<li>Genere las capas de valores beta.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gwr.ta.stk <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">stack</span>(gwr.ta<span class="sc">$</span>SDF)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gwr.ta.stk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Mediante álgebra de mapas genere la predicción para la variable de temperatura, usando las capas beta y las variables independientes .</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ta_pred <span class="ot">&lt;-</span> gwr.ta.stk[[<span class="dv">2</span>]] <span class="sc">+</span> alt <span class="sc">*</span> gwr.ta.stk[[<span class="dv">3</span>]] <span class="sc">+</span> forest2010 <span class="sc">*</span> gwr.ta.stk[[<span class="dv">4</span>]]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(ta_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <hr>
 </section>
 <section id="actividad-3.-predicción-geoestadística" class="level2">
@@ -376,10 +463,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>A partir de los mismos datos de muestreo genere el semivariograma experimental.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">variogram</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, <span class="at">locations =</span> puntos)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">variogram</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, <span class="at">locations =</span> puntos)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
@@ -387,36 +474,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Para ajustar el modelo vamos a revisar los disponibles</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gstat<span class="sc">::</span><span class="fu">show.vgms</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>gstat<span class="sc">::</span><span class="fu">show.vgms</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Entre los que mejor se ajustan al semivariograma experimental están “Sph”, “Cir” y “Pen”</p>
 <div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Sph"</span>)))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Cir"</span>)))</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Pen"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Sph"</span>)))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Cir"</span>)))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Pen"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-19-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-19-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 </div>
 <p>El mejor modelo de variograma que se ajusta, tanto para distancias cortas como para distancias largas, es el modelo “Pen”</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit.v <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Pen"</span>))</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> fit.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fit.v <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(v, <span class="at">model =</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">"Pen"</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v, <span class="at">model =</span> fit.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
@@ -426,8 +513,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Kriging simple</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>simple_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, puntos, template, <span class="at">model =</span> fit.v, </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">beta =</span> <span class="fu">mean</span>(puntos<span class="sc">$</span>ta_media))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>simple_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, puntos, template, <span class="at">model =</span> fit.v, </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">beta =</span> <span class="fu">mean</span>(puntos<span class="sc">$</span>ta_media))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[using simple kriging]</code></pre>
 </div>
@@ -436,8 +523,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Kriging Ordinario</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ordinary_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, <span class="at">locations =</span> puntos, <span class="at">newdata =</span> template,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> fit.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ordinary_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> <span class="dv">1</span>, <span class="at">locations =</span> puntos, <span class="at">newdata =</span> template,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> fit.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[using ordinary kriging]</code></pre>
 </div>
@@ -446,27 +533,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Kriging Universal</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>universal_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> x <span class="sc">+</span> y, puntos, template, </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> automap<span class="sc">::</span><span class="fu">autofitVariogram</span>(ta_media <span class="sc">~</span> x <span class="sc">+</span> y, puntos)<span class="sc">$</span>var_model, </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">block =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>universal_krige <span class="ot">&lt;-</span> <span class="fu">krige</span>(ta_media <span class="sc">~</span> x <span class="sc">+</span> y, puntos, template, </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> automap<span class="sc">::</span><span class="fu">autofitVariogram</span>(ta_media <span class="sc">~</span> x <span class="sc">+</span> y, puntos)<span class="sc">$</span>var_model, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">block =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[using universal kriging]</code></pre>
 </div>
 </div>
 <div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(simple_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Simple"</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(ordinary_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Ordinario"</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(universal_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Universal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(simple_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Simple"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(ordinary_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Ordinario"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(universal_krige, <span class="st">"var1.pred"</span>, <span class="at">main =</span> <span class="st">"Universal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="Unidad4_files/figure-html/unnamed-chunk-18-3.png" class="img-fluid" width="672"></p>
+<p><img src="Unidad4_files/figure-html/unnamed-chunk-24-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
