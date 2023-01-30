@@ -142,18 +142,84 @@ spplot(tps_grid, main = "Thin plate spline")
 - Ajuste un modelo de regresión geográficamente ponderada (GWR) con las variables "ta_media" como dependiente y "Altitud" + "Forest_P_2010" como independientes
 
 
+```{r}
+alt <- raster("data/tif/dem200s.tif") |>
+  crop(mascara) 
+#Llamar al archivo modis
+forest2010 <- raster("data/tif/modis_perc_bosque_2010_clip.tif") |>
+  crop(mascara) 
+```
+
+
+```{r}
+bwG <- gwr.sel(ta_media ~ Altitud + Forest_P_2010,
+               data = puntos,
+               gweight = gwr.Gauss,
+               verbose = FALSE)
+bwG
+
+# Ajuste del modelo sin predicción
+
+gwr.ta <- gwr(ta_media ~ Altitud + Forest_P_2010,
+              data = puntos,
+              bandwidth = bwG,
+              gweight = gwr.Gauss,
+              fit.points = template)
+
+gwr.ta
+
+```
+
+::: {.column width="45%"}
+
+```{r}
+
+template2 <- stack(list(ta_media = raster(template),
+                         Altitud = alt,
+                         Forest_P_2010 = forest2010)) |>
+  mask(alt) |> 
+  as("SpatialPixelsDataFrame")
+
+gwr.ta2 <- gwr(ta_media ~ Altitud + Forest_P_2010,
+               data = puntos,
+               bandwidth = bwG,
+               gweight = gwr.Gauss,
+               fit.points = template2,
+               predictions = TRUE)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+spplot(gwr.ta2$SDF, "pred")
+```
+
+:::
+
+
 - Describa el resultado.
+
+> El modelo GWR, es una de las tecnicas de regresión espacial empleado ampliamente en geografia y en otras areas. El cual mediante una ecuación de regresión evalua las variables que influyen en el proceso que se intenta comprender o precedir. Obteniendo como resultado los coeficientes de correlación entre el proceso a comprender o predecir y cada variable evaluada. 
+Por lo tanto, considerando a la variable temperatura como dependiente de la altitud y Forest  2010. Se obtuvo que la altitud presenta coeficeintes negativos (-0.005: -0.003), mientras que la cobertura de bosque, presenta coeficientes entre -0.001 a 0.1. 
+En ambos casos, su influencia es baja con respecto a la temperatura. 
 
 
 - Genere las capas de valores beta.
 
+```{r}
+gwr.ta.stk <- raster::stack(gwr.ta$SDF)
+plot(gwr.ta.stk)
+```
 
 - Mediante álgebra de mapas genere la predicción para la variable de temperatura, usando las capas beta y las variables independientes .
 
+```{r}
+ta_pred <- gwr.ta.stk[[2]] + alt * gwr.ta.stk[[3]] + forest2010 * gwr.ta.stk[[4]]
 
-
-
-
+spplot(ta_pred)
+```
 
 
 ------------------------------------------------------------------------
