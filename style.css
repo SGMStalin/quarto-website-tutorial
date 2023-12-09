@@ -1,0 +1,11 @@
+section.level1 {
+  text-align: center;
+}
+
+.center-fig-cap {
+  text-align: center;
+}
+
+figcaption, .caption{
+  text-align: center;
+}

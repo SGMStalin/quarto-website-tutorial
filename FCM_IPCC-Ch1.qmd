@@ -1,0 +1,155 @@
+---
+title: "Chapter 1: Framing, Context and Methods"
+subtitle: "Climatología y Cambio Climático"
+author: _Stalin Guamán_
+lang: es
+number-sections: true
+number-depth: 2
+crossref:
+  fig-title: "**Figura**"
+  title-delim: "**.**"
+format: 
+  revealjs:
+    theme: [default, mytheme.scss]
+    width: 1080
+    height: 720
+    margin: 0.05
+    reference-location: document
+    incremental: true
+    embed-resources: true
+    controls: true
+    transition: slide
+    slide-number: c
+    show-slide-number: all
+    background-transition: fade
+    logo: images/ipcc_logo.png
+    footer: "Framing, Context and Methods"
+    menu: false
+    smaller: true
+css: style.css
+---
+
+## Índice {.unnumbered}
+
+::: {.nonincremental}
+
+1. Contexto
+1. Dónde estamos ahora?
+1. Cómo hemos llegado hasta aquí: El contexto científico
+1. Fundamentos y conceptos
+1. Desarrollos mayores y sus implicaciones
+1. Dimensiones de integración: Escenarios, Niveles de calentamiento y Emisiones de Carbono
+1. Conclusiones
+
+:::
+
+## Conceptos
+
+- GHG: Gases de efecto invernadero
+- GMST: Temperatura media global de la superficie (1850-1900)
+- GSAT: Temperatura media anual de la superficie
+- 
+
+# Contexto {transition="zoom"}
+
+_Informe de evaluación 6 (AR6)_
+
+## {.unnumbered auto-animate=true auto-animate-easing="ease-in-out"}
+
+![La estructura del reporte 6 - WG1. Se muestran los tres pilares principales del AR6](images/str_ar6.png){#fig-str_ar6}
+
+::: {.absolute top=180 left=250 style="font-size: 12pt;"}
+Ciencia física del Cambio Climático
+:::
+
+
+::: {.nonincremental .absolute top=5 left=230 style="font-size: 12pt;"}
+
+- Impactos
+- Vulnerabilidad
+- Adaptaciones
+
+:::
+
+
+::: {.absolute top=20 left=715 style="font-size: 12pt;"}
+
+Opciones de mitigación
+
+:::
+
+
+::: {.nonincremental .fragment .absolute top=220 left=820 style="font-size: 14pt;"}
+
+**Cantidad y Calidad de:**
+
+- Archivos paleoclimáticos
+- Observaciones instrumentales
+
+:::
+
+
+::: {.nonincremental .fragment .absolute top=330 left=820 style="font-size: 14pt;"}
+
+**Conocimiento de:**
+
+- Proc. Físicos
+- Proc. Químicos
+- Proc. Biológicos
+
+:::
+
+
+::: {.nonincremental .fragment .absolute top=480 left=820 style="font-size: 14pt;"}
+
+**Mejora en:**
+
+- Capacidades de modelamiento
+- Representaciones físicas
+- Capacidades computacionales
+:::
+
+::: {.notes}
+
+SyR: Synthesis Report
+30yrs of global collaboration (1988)
+
+- **Large scale:** Climate information from global to continental or ocean scales
+- **Process Understanding:** Procesos fundamentales de la tierra y sus componentes 
+- **Regional information:** Nuevo conocimiento acerca del clima regional
+
+:::
+
+# Where we are now
+
+*Aparentemente ya se observa un cambio climático*
+
+## El estado cambiante del Sistema Climático
+
+> Muchos de los cambios obervados no tienen precedentes, incluso a escalas mileniales
+
+![Cambios que han ocurrido en el sistema climático](images/changes.png){#fig-changes}
+
+***"Emergence of the climate signal:"*** Cambios en el sistema más rápidos que sus ciclos anuales o decadales.
+  
+::: {.nonincremental .fragment style="font-size: 14pt;"}
+
+::: {style="border-style: dashed; border-width: 2px; border-color: red; border-radius:5px; width: 400px; height: 60px;".absolute top=232 left=460}
+
+:::
+
+::: {style="border-style: dashed; border-width: 2px; border-color: red; border-radius:5px; width: 400px; height: 60px;".absolute top=350 left=460}
+ 
+:::
+
+:::
+
+::: {.notes}
+- the atmosphere and the ocean have warmed, 
+- amounts of  snow and ice have diminished, 
+- sea level has risen.
+- ocean has acidified, its oxygen content has declined, 
+- and atmospheric concentrations of GHGs have increased
+:::
+
+

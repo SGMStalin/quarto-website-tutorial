@@ -1,0 +1,21 @@
+
+/*-- scss:rules --*/
+
+// Slide numbers to the bottom-left
+.slide-number, .reveal.has-logo .slide-number {
+  bottom: 14px !important;
+  right: 50px !important;
+  top: unset !important;
+  color: #777777 !important;
+}
+
+.slide-logo {
+  display: block !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 25px !important;
+  max-height: 8% !important;
+  height: 100% !important;
+  width: auto !important;
+  color: $body-color !important;
+}
